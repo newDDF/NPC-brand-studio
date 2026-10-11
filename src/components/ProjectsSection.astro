@@ -1,0 +1,19 @@
+---
+import { siteConfig } from '../config/site';
+import { getProjectsTranslations } from '../i18n/projects';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const content = getProjectsTranslations(locale);
+---
+
+<section class="projects section" id="projects">
+  <div class="container project-banner">
+    <div>
+      <p class="eyebrow">{content.eyebrow}</p>
+      <h2>{content.titleLine1}<br />{content.titleLine2}</h2>
+    </div>
+    <a class="button button-light" href="#contact">
+      {content.buttonLabel} <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</section>

@@ -1,0 +1,66 @@
+---
+import type { GetStaticPaths } from 'astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../../components/SiteHeader.astro';
+import SiteFooter from '../../components/SiteFooter.astro';
+import HeroSection from '../../components/HeroSection.astro';
+import CapabilitiesSection from '../../components/CapabilitiesSection.astro';
+import ProjectsSection from '../../components/ProjectsSection.astro';
+import { siteConfig } from '../../config/site';
+import { getSeoTranslations } from '../../i18n/seo';
+import { getAboutTranslations } from '../../i18n/about';
+import { getContactTranslations } from '../../i18n/contact';
+
+export const getStaticPaths = (() => {
+  return siteConfig.locales
+    .filter((locale) => locale !== siteConfig.defaultLocale)
+    .map((locale) => ({
+      params: { locale },
+      props: { locale },
+    }));
+}) satisfies GetStaticPaths;
+
+const { locale } = Astro.props;
+const seo = getSeoTranslations(locale);
+const about = getAboutTranslations(locale);
+const contact = getContactTranslations(locale);
+---
+
+<BaseLayout lang={locale} title={seo.title} description={seo.description}>
+  <SiteHeader />
+  <main>
+    <HeroSection />
+    {siteConfig.features.about && (
+      <section class="intro section" id="about">
+        <div class="container intro-grid">
+          <p class="eyebrow">{about.eyebrow}</p>
+          <div>
+            <h2>{about.title}</h2>
+            <p class="intro-copy">
+              {about.description}
+            </p>
+            <a class="text-link" href="#contact">
+              {about.linkLabel} <span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    )}
+    {siteConfig.features.products && <CapabilitiesSection />}
+    {siteConfig.features.projects && <ProjectsSection />}
+    {siteConfig.features.contact && (
+      <section class="contact section" id="contact">
+        <div class="container contact-inner">
+          <div>
+            <p class="eyebrow">{contact.eyebrow}</p>
+            <h2>{contact.titleLine1}<br />{contact.titleLine2}</h2>
+          </div>
+          <a class="button button-primary" href={`mailto:${siteConfig.contact.email}`}>
+            {contact.buttonLabel} <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    )}
+  </main>
+  <SiteFooter />
+</BaseLayout>

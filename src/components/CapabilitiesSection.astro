@@ -1,0 +1,29 @@
+---
+import { siteConfig } from '../config/site';
+import { getCapabilitiesTranslations } from '../i18n/capabilities';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const content = getCapabilitiesTranslations(locale);
+---
+
+<section class="capabilities section" id="products">
+  <div class="container">
+    <div class="section-heading">
+      <p class="eyebrow">{content.eyebrow}</p>
+      <h2>{content.title}</h2>
+    </div>
+
+    <div class="capability-grid">
+      {content.cards.map((card, index) => (
+        <article class="capability-card">
+          <span class="card-number">{String(index + 1).padStart(2, '0')}</span>
+          <div>
+            <h3>{card.title}</h3>
+            <p>{card.description}</p>
+          </div>
+          <span class="card-arrow" aria-hidden="true">↗</span>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

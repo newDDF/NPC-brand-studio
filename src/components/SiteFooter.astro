@@ -1,0 +1,82 @@
+---
+import { siteConfig } from '../config/site';
+import { getTranslations } from '../i18n';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = getTranslations(locale);
+---
+
+<footer class="site-footer" id="news">
+  <div class="container footer-inner">
+    <a class="brand" href={import.meta.env.BASE_URL} aria-label={siteConfig.name}>
+      <img class="brand-logo" src={`${import.meta.env.BASE_URL}${siteConfig.logo.replace(/^\//, '')}`} alt="" />
+      <span class="brand-name">{siteConfig.name}</span>
+    </a>
+
+    <p>
+      © {new Date().getFullYear()} {siteConfig.legalName}.
+      {t.common.allRightsReserved}
+    </p>
+
+    <a href="#top">{t.common.backToTop} ↑</a>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .footer-inner {
+    display: flex;
+    min-height: 100px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    white-space: nowrap;
+  }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    border-radius: 9px;
+  }
+
+  .footer-inner p {
+    margin: 0;
+    font-size: 0.75rem;
+  }
+
+  .footer-inner > a:last-child {
+    font-size: 0.85rem;
+    font-weight: 550;
+    transition: color 180ms ease;
+  }
+
+  .footer-inner > a:last-child:hover {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 680px) {
+    .footer-inner {
+      align-items: flex-start;
+      flex-wrap: wrap;
+      padding-block: 28px;
+    }
+
+    .footer-inner p {
+      order: 3;
+      width: 100%;
+    }
+  }
+</style>

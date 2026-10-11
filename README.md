@@ -1,43 +1,98 @@
-# Astro Starter Kit: Minimal
+# NPC Brand Studio
 
-```sh
-npm create astro@latest -- --template minimal
+A configurable, multilingual static website template built with Astro for corporate, manufacturing, and brand websites.
+
+## Features
+
+- Static site generation with Astro
+- Six locales: English, Simplified Chinese, Spanish, German, French, and Japanese
+- Configurable brand identity, theme, navigation, and contact information
+- Reusable homepage sections
+- SEO metadata and social sharing metadata
+- Deployment support for GitHub Pages, Cloudflare Pages, and Docker
+
+## Requirements
+
+- Node.js 22.12 or later
+- npm
+
+## Development
+
+```bash
+npm ci
+npx astro dev --background
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Manage the background development server:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npx astro dev status
+npx astro dev logs
+npx astro dev stop
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+## Build
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+Build for root-path hosting:
 
-Any static assets, like images, can be placed in the `public/` directory.
+```bash
+npm run build
+```
 
-## 🧞 Commands
+Build for the GitHub Pages project site:
 
-All commands are run from the root of the project, from a terminal:
+```bash
+npm run build:github
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Generated files are written to `dist/`.
 
-## 👀 Want to learn more?
+## Configuration
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Edit `src/config/site.ts` to configure:
+
+- Brand name, logo, tagline, and description
+- Supported locales and default language
+- Theme preset, accent color, and display mode
+- Navigation and contact email
+- Optional homepage sections
+
+Translations are maintained in `src/i18n/`. Update the relevant locale files when changing user-facing text.
+
+Before deploying a real site, replace placeholder values such as `https://example.com` and `hello@example.com` in the configuration.
+
+## Deployment
+
+### GitHub Pages
+
+The GitHub Pages build uses `astro.github.config.mjs` and the repository base path `/NPC-brand-studio/`.
+
+Repository: https://github.com/newDDF/NPC-brand-studio
+
+Expected site URL: https://newddf.github.io/NPC-brand-studio/
+
+### Cloudflare Pages
+
+- Build command: `npm run build`
+- Build output directory: `dist`
+- Node.js: 22.12 or later
+
+### Docker
+
+Build and start the static web server:
+
+```bash
+docker compose up -d --build
+```
+
+The site is exposed on port `8080` by default. Open `http://localhost:8080`.
+
+Stop the service:
+
+```bash
+docker compose down
+```
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](./LICENSE).

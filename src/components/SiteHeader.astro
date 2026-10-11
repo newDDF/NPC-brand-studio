@@ -1,0 +1,217 @@
+---
+import { siteConfig } from '../config/site';
+import { getTranslations } from '../i18n';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const t = getTranslations(locale);
+
+const localeNames: Record<string, string> = {
+  en: 'English',
+  'zh-cn': '简体中文',
+  es: 'Español',
+  de: 'Deutsch',
+  fr: 'Français',
+  ja: '日本語',
+};
+---
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href={import.meta.env.BASE_URL} aria-label={siteConfig.name}>
+      <img class="brand-logo" src={`${import.meta.env.BASE_URL}${siteConfig.logo.replace(/^\//, '')}`} alt="" />
+      <span class="brand-name">{siteConfig.name}</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Main navigation">
+      {siteConfig.navigation
+        .filter((item) => siteConfig.features[item.feature])
+        .map((item) => (
+          <a href={item.href}>
+            {t.nav[item.feature as keyof typeof t.nav] ?? item.label}
+          </a>
+        ))}
+    </nav>
+
+    <div class="header-actions">
+      <details class="language-switcher">
+        <summary aria-label="Choose language">
+          {locale.toUpperCase()} <span aria-hidden="true">⌄</span>
+        </summary>
+        <div class="language-menu">
+          {siteConfig.locales.map((item) => (
+            <a
+              href={item === siteConfig.defaultLocale ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}${item}/`}
+              lang={item}
+              aria-current={item === locale ? 'page' : undefined}
+              class:list={{ active: item === locale }}
+            >
+              {localeNames[item] ?? item}
+            </a>
+          ))}
+        </div>
+      </details>
+
+      {siteConfig.features.contact && (
+        <a class="header-contact" href="#contact">
+          {t.nav.contact} <span aria-hidden="true">↗</span>
+        </a>
+      )}
+    </div>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: relative;
+    z-index: 10;
+    border-bottom: 1px solid var(--color-border);
+    background: var(--color-background);
+  }
+
+  .header-inner {
+    display: flex;
+    min-height: 80px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    white-space: nowrap;
+  }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    flex: 0 0 auto;
+    border-radius: 9px;
+  }
+
+  .brand-name strong {
+    font-weight: 750;
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: clamp(18px, 3vw, 38px);
+  }
+
+  .main-nav a,
+  .header-contact {
+    font-size: 0.85rem;
+    font-weight: 550;
+    transition: color 180ms ease;
+  }
+
+  .main-nav a:hover,
+  .header-contact:hover {
+    color: var(--color-accent);
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .header-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    white-space: nowrap;
+  }
+
+  .language-switcher {
+    position: relative;
+    font-size: 0.82rem;
+  }
+
+  .language-switcher summary {
+    cursor: pointer;
+    list-style: none;
+    white-space: nowrap;
+  }
+
+  .language-switcher summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .language-switcher summary:hover {
+    color: var(--color-accent);
+  }
+
+  .language-menu {
+    position: absolute;
+    top: calc(100% + 14px);
+    right: 0;
+    z-index: 20;
+    display: grid;
+    min-width: 145px;
+    padding: 6px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-background);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 8%);
+  }
+
+  .language-menu a {
+    padding: 9px 11px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .language-menu a:hover,
+  .language-menu a.active {
+    color: var(--color-accent);
+    background: var(--color-surface, #f3f5f8);
+  }
+
+  @media (max-width: 900px) {
+    .main-nav {
+      gap: 16px;
+    }
+
+    .header-inner {
+      gap: 16px;
+    }
+
+    .header-actions {
+      gap: 14px;
+    }
+  }
+
+  @media (max-width: 680px) {
+    .header-inner {
+      min-height: 70px;
+      flex-wrap: wrap;
+      padding-block: 14px;
+    }
+
+    .header-actions {
+      margin-left: auto;
+    }
+
+    .main-nav {
+      order: 3;
+      width: 100%;
+      justify-content: space-between;
+      padding-top: 8px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .main-nav a {
+      font-size: 0.78rem;
+    }
+
+    .header-contact {
+      font-size: 0.8rem;
+    }
+  }
+</style>

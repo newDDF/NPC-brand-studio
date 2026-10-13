@@ -6,7 +6,7 @@ export const siteConfig = {
   tagline: 'Precision engineered. Purpose built.',
   description:
     'Precision manufacturing and engineered solutions for demanding industries.',
-  url: 'https://example.com',
+  url: 'https://npc-brand-studio.pages.dev',
 
   // Localization
   defaultLocale: 'en',
@@ -30,7 +30,7 @@ export const siteConfig = {
 
   // Contact information
   contact: {
-    email: 'hello@example.com',
+    email: 'newnpcx2@proton.me',
   },
 
   // Optional sections

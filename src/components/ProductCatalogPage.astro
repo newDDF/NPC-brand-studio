@@ -1,0 +1,439 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { siteConfig } from '../config/site';
+import { catalogProducts } from '../content/products/catalog';
+import { getProductsTranslations } from '../i18n/products';
+
+interface Props {
+  locale?: string;
+}
+
+const locale = Astro.props.locale ?? Astro.currentLocale ?? siteConfig.defaultLocale;
+const copy = getProductsTranslations(locale);
+
+const ui = {
+  en: {
+    eyebrow: 'NPC PRECISION / PRODUCT FINDER',
+    title: 'Find your next set of wheels.',
+    intro: 'Explore wheel concepts by series, dimensions, bolt pattern and finish.',
+    search: 'Search by name, model or specification',
+    series: 'Series',
+    allSeries: 'All series',
+    forged: 'Forged',
+    flow: 'Flow formed',
+    sport: 'Sport',
+    diameter: 'Diameter',
+    allDiameters: 'All diameters',
+    width: 'Width',
+    allWidths: 'All widths',
+    pcd: 'Bolt pattern (PCD)',
+    allPcd: 'All bolt patterns',
+    color: 'Finish color',
+    allColors: 'All colors',
+    black: 'Black',
+    grey: 'Grey',
+    silver: 'Silver',
+    results: 'Products',
+    reset: 'Reset filters',
+    sku: 'Model',
+    size: 'Diameter options',
+    widths: 'Width options',
+    fitment: 'Concept applications',
+    demo: 'Concept data',
+    disclaimer: 'Illustrative concept data only. Dimensions and vehicle applications are not certified fitment specifications. Always confirm diameter, width, PCD, offset, center bore, load rating and brake clearance before purchase.',
+    inquire: 'Ask about this concept',
+    empty: 'No products match these filters. Try changing your search.',
+  },
+  'zh-cn': {
+    eyebrow: 'NPC PRECISION / 产品检索',
+    title: '寻找适合你的轮毂设计。',
+    intro: '按系列、尺寸、螺栓孔距与表面颜色探索轮毂设计概念。',
+    search: '搜索名称、型号或规格',
+    series: '产品系列',
+    allSeries: '全部系列',
+    forged: '锻造系列',
+    flow: '旋压系列',
+    sport: '运动系列',
+    diameter: '轮毂直径',
+    allDiameters: '全部直径',
+    width: '轮毂宽度',
+    allWidths: '全部宽度',
+    pcd: '螺栓孔距（PCD）',
+    allPcd: '全部孔距',
+    color: '表面颜色',
+    allColors: '全部颜色',
+    black: '黑色',
+    grey: '灰色',
+    silver: '银色',
+    results: '款产品',
+    reset: '重置筛选',
+    sku: '型号',
+    size: '直径选项',
+    widths: '宽度选项',
+    fitment: '概念应用方向',
+    demo: '概念演示数据',
+    disclaimer: '此处参数与车辆应用仅用于概念演示，不代表经过认证的适配规格。购买前请核实直径、宽度、PCD、ET 值、中心孔、承载等级及制动器间隙。',
+    inquire: '咨询该设计',
+    empty: '没有符合条件的产品，请调整搜索或筛选条件。',
+  },
+  es: {
+    eyebrow: 'NPC PRECISION / BUSCADOR DE PRODUCTOS',
+    title: 'Encuentra tus próximas llantas.',
+    intro: 'Explora diseños por serie, dimensiones, patrón de pernos y acabado.',
+    search: 'Buscar por nombre, modelo o especificación',
+    series: 'Serie',
+    allSeries: 'Todas las series',
+    forged: 'Forjada',
+    flow: 'Flow formed',
+    sport: 'Sport',
+    diameter: 'Diámetro',
+    allDiameters: 'Todos los diámetros',
+    width: 'Anchura',
+    allWidths: 'Todas las anchuras',
+    pcd: 'Patrón de pernos (PCD)',
+    allPcd: 'Todos los patrones',
+    color: 'Color del acabado',
+    allColors: 'Todos los colores',
+    black: 'Negro',
+    grey: 'Gris',
+    silver: 'Plateado',
+    results: 'productos',
+    reset: 'Restablecer filtros',
+    sku: 'Modelo',
+    size: 'Opciones de diámetro',
+    widths: 'Opciones de anchura',
+    fitment: 'Aplicaciones conceptuales',
+    demo: 'Datos conceptuales',
+    disclaimer: 'Datos ilustrativos, no especificaciones certificadas de compatibilidad. Confirma diámetro, anchura, PCD, desplazamiento, buje, carga y espacio para frenos antes de comprar.',
+    inquire: 'Consultar este diseño',
+    empty: 'No hay productos que coincidan. Cambia los filtros.',
+  },
+  de: {
+    eyebrow: 'NPC PRECISION / PRODUKTFINDER',
+    title: 'Finden Sie Ihre nächsten Felgen.',
+    intro: 'Entdecken Sie Designs nach Serie, Abmessungen, Lochkreis und Oberfläche.',
+    search: 'Nach Name, Modell oder Spezifikation suchen',
+    series: 'Serie',
+    allSeries: 'Alle Serien',
+    forged: 'Geschmiedet',
+    flow: 'Flow Formed',
+    sport: 'Sport',
+    diameter: 'Durchmesser',
+    allDiameters: 'Alle Durchmesser',
+    width: 'Breite',
+    allWidths: 'Alle Breiten',
+    pcd: 'Lochkreis (PCD)',
+    allPcd: 'Alle Lochkreise',
+    color: 'Oberflächenfarbe',
+    allColors: 'Alle Farben',
+    black: 'Schwarz',
+    grey: 'Grau',
+    silver: 'Silber',
+    results: 'Produkte',
+    reset: 'Filter zurücksetzen',
+    sku: 'Modell',
+    size: 'Durchmesseroptionen',
+    widths: 'Breitenoptionen',
+    fitment: 'Konzeptionelle Anwendungen',
+    demo: 'Konzeptdaten',
+    disclaimer: 'Nur illustrative Konzeptdaten, keine zertifizierten Freigaben. Durchmesser, Breite, PCD, Einpresstiefe, Nabenbohrung, Traglast und Bremsfreigängigkeit vor dem Kauf prüfen.',
+    inquire: 'Zu diesem Design anfragen',
+    empty: 'Keine passenden Produkte. Bitte Filter ändern.',
+  },
+  fr: {
+    eyebrow: 'NPC PRECISION / RECHERCHE PRODUITS',
+    title: 'Trouvez vos prochaines jantes.',
+    intro: 'Explorez les designs par série, dimensions, entraxe et finition.',
+    search: 'Rechercher par nom, modèle ou spécification',
+    series: 'Série',
+    allSeries: 'Toutes les séries',
+    forged: 'Forgée',
+    flow: 'Flow formed',
+    sport: 'Sport',
+    diameter: 'Diamètre',
+    allDiameters: 'Tous les diamètres',
+    width: 'Largeur',
+    allWidths: 'Toutes les largeurs',
+    pcd: 'Entraxe (PCD)',
+    allPcd: 'Tous les entraxes',
+    color: 'Couleur de finition',
+    allColors: 'Toutes les couleurs',
+    black: 'Noir',
+    grey: 'Gris',
+    silver: 'Argent',
+    results: 'produits',
+    reset: 'Réinitialiser les filtres',
+    sku: 'Modèle',
+    size: 'Diamètres disponibles',
+    widths: 'Largeurs disponibles',
+    fitment: 'Applications conceptuelles',
+    demo: 'Données conceptuelles',
+    disclaimer: 'Données illustratives uniquement, sans homologation. Vérifiez diamètre, largeur, PCD, déport, alésage, charge et dégagement des freins avant achat.',
+    inquire: 'Demander des informations',
+    empty: 'Aucun produit correspondant. Modifiez les filtres.',
+  },
+  ja: {
+    eyebrow: 'NPC PRECISION / 製品検索',
+    title: '次のホイールを見つける。',
+    intro: 'シリーズ、サイズ、PCD、仕上げからホイールデザインを検索できます。',
+    search: '名称・型番・仕様で検索',
+    series: 'シリーズ',
+    allSeries: 'すべてのシリーズ',
+    forged: '鍛造',
+    flow: 'フローフォーミング',
+    sport: 'スポーツ',
+    diameter: 'リム径',
+    allDiameters: 'すべての径',
+    width: 'リム幅',
+    allWidths: 'すべての幅',
+    pcd: 'ボルトパターン（PCD）',
+    allPcd: 'すべてのPCD',
+    color: '仕上げ色',
+    allColors: 'すべての色',
+    black: 'ブラック',
+    grey: 'グレー',
+    silver: 'シルバー',
+    results: '製品',
+    reset: 'フィルターをリセット',
+    sku: '型番',
+    size: 'リム径の選択肢',
+    widths: 'リム幅の選択肢',
+    fitment: '想定用途',
+    demo: 'コンセプトデータ',
+    disclaimer: '本データはコンセプト用の例示であり、認証済み適合仕様ではありません。購入前に径、幅、PCD、オフセット、ハブ径、耐荷重、ブレーキクリアランスを確認してください。',
+    inquire: 'このデザインについて問い合わせる',
+    empty: '一致する製品がありません。条件を変更してください。',
+  },
+} as const;
+
+const t = ui[locale as keyof typeof ui] ?? ui.en;
+const productText = copy.products;
+const title = locale === 'zh-cn' ? '产品目录' : locale === 'ja' ? '製品カタログ' : locale === 'de' ? 'Produktkatalog' : locale === 'fr' ? 'Catalogue produits' : locale === 'es' ? 'Catálogo de productos' : 'Product Catalog';
+---
+
+<BaseLayout lang={locale} title={title} description={t.intro}>
+  <SiteHeader />
+  <main class="catalog-page" id="top">
+    <section class="catalog-hero">
+      <div class="container">
+        <p class="eyebrow">{t.eyebrow}</p>
+        <h1>{t.title}</h1>
+        <p class="catalog-intro">{t.intro}</p>
+      </div>
+    </section>
+
+    <section class="container catalog-content" aria-label={title}>
+      <div class="catalog-tools">
+        <label class="search-field">
+          <span class="sr-only">{t.search}</span>
+          <span aria-hidden="true">⌕</span>
+          <input type="search" data-search placeholder={t.search} />
+        </label>
+
+        <div class="filter-grid">
+          <label>
+            <span>{t.series}</span>
+            <select data-filter="series">
+              <option value="">{t.allSeries}</option>
+              <option value="forged">{t.forged}</option>
+              <option value="flow-formed">{t.flow}</option>
+              <option value="sport">{t.sport}</option>
+            </select>
+          </label>
+          <label>
+            <span>{t.diameter}</span>
+            <select data-filter="diameters">
+              <option value="">{t.allDiameters}</option>
+              <option value="17">17"</option>
+              <option value="18">18"</option>
+              <option value="19">19"</option>
+              <option value="20">20"</option>
+            </select>
+          </label>
+          <label>
+            <span>{t.width}</span>
+            <select data-filter="widths">
+              <option value="">{t.allWidths}</option>
+              <option value="7.5">7.5J</option>
+              <option value="8">8J</option>
+              <option value="8.5">8.5J</option>
+              <option value="9">9J</option>
+              <option value="9.5">9.5J</option>
+            </select>
+          </label>
+          <label>
+            <span>{t.pcd}</span>
+            <select data-filter="pcd">
+              <option value="">{t.allPcd}</option>
+              <option value="5x100">5×100</option>
+              <option value="5x112">5×112</option>
+              <option value="5x114.3">5×114.3</option>
+            </select>
+          </label>
+          <label>
+            <span>{t.color}</span>
+            <select data-filter="colors">
+              <option value="">{t.allColors}</option>
+              <option value="black">{t.black}</option>
+              <option value="grey">{t.grey}</option>
+              <option value="silver">{t.silver}</option>
+            </select>
+          </label>
+          <button class="reset-button" type="button" data-reset>{t.reset}</button>
+        </div>
+      </div>
+
+      <div class="catalog-results">
+        <p class="result-count"><strong data-count>{catalogProducts.length}</strong> {t.results}</p>
+        <div class="product-grid" data-grid>
+          {catalogProducts.map((product) => {
+            const translated = productText.find((item) => item.id === product.id);
+            const name = translated?.title ?? product.name;
+            const description = translated?.description ?? product.description;
+            return (
+              <article
+                class="catalog-card"
+                data-product
+                data-series={product.series}
+                data-diameters={product.diameters.join(',')}
+                data-widths={product.widths.join(',')}
+                data-pcd={product.pcd.join(',')}
+                data-colors={product.colors.join(',')}
+                data-search={`${product.name} ${product.sku} ${product.series} ${product.finish} ${product.pcd.join(' ')} ${product.diameters.join(' ')} ${product.widths.join(' ')} ${product.vehicles.join(' ')}`.toLowerCase()}
+              >
+                <div class="card-image">
+                  <img src={`${import.meta.env.BASE_URL}${product.image.replace(/^\//, '')}`} alt={translated?.imageAlt ?? product.name} loading="lazy" />
+                  <span class="concept-tag">{t.demo}</span>
+                </div>
+                <div class="card-body">
+                  <div class="card-kicker">
+                    <span>{product.sku}</span>
+                    <span>{product.finish}</span>
+                  </div>
+                  <h2>{name}</h2>
+                  <p class="card-description">{description}</p>
+                  <dl class="spec-list">
+                    <div>
+                      <dt>{t.size}</dt>
+                      <dd>{product.diameters.map((item) => `${item}"`).join(' / ')}</dd>
+                    </div>
+                    <div>
+                      <dt>{t.widths}</dt>
+                      <dd>{product.widths.map((item) => `${item}J`).join(' / ')}</dd>
+                    </div>
+                    <div>
+                      <dt>{t.pcd}</dt>
+                      <dd>{product.pcd.join(' · ')}</dd>
+                    </div>
+                    <div>
+                      <dt>{t.fitment}</dt>
+                      <dd>{product.vehicles.join(' · ')}</dd>
+                    </div>
+                  </dl>
+                  <a class="inquiry-link" href={`mailto:${siteConfig.contact.email}?subject=${encodeURIComponent(`NPC Precision — ${product.sku}`)}`}>
+                    {t.inquire} <span aria-hidden="true">↗</span>
+                  </a>
+                </div>
+              </article>
+            );
+          })}
+        </div>
+        <p class="empty-state" data-empty hidden>{t.empty}</p>
+      </div>
+
+      <aside class="catalog-disclaimer">
+        <strong>{t.demo}</strong>
+        <p>{t.disclaimer}</p>
+      </aside>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .catalog-page { min-height: 65vh; }
+  .catalog-hero { padding: clamp(56px, 9vw, 112px) 0 44px; border-bottom: 1px solid var(--color-border); }
+  .catalog-hero h1 { max-width: 850px; margin: 0 0 22px; font-size: clamp(2.5rem, 6vw, 5.2rem); }
+  .catalog-intro { max-width: 650px; margin: 0; font-size: 1.05rem; }
+  .catalog-content { padding-block: 36px 84px; }
+  .catalog-tools { margin-bottom: 32px; padding: 24px; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-background); }
+  .search-field { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 0 15px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); color: var(--color-text-muted); }
+  .search-field > span:not(.sr-only) { font-size: 1.5rem; }
+  .search-field input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--color-text); }
+  .filter-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)) auto; gap: 14px; margin-top: 20px; align-items: end; }
+  .filter-grid label { display: grid; gap: 7px; min-width: 0; }
+  .filter-grid label span { color: var(--color-text-muted); font-size: 0.76rem; font-weight: 600; }
+  .filter-grid select { width: 100%; min-width: 0; min-height: 42px; padding: 0 9px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-background); color: var(--color-text); }
+  .reset-button { min-height: 42px; padding: 0 12px; border: 1px solid var(--color-border); border-radius: var(--radius-sm); background: var(--color-surface); cursor: pointer; white-space: nowrap; font-size: 0.82rem; }
+  .reset-button:hover { border-color: var(--color-accent); color: var(--color-accent); }
+  .result-count { margin: 0 0 18px; color: var(--color-text-muted); font-size: 0.88rem; }
+  .result-count strong { color: var(--color-text); }
+  .product-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+  .catalog-card { min-width: 0; overflow: hidden; border: 1px solid var(--color-border); border-radius: var(--radius-md); background: var(--color-background); }
+  .card-image { position: relative; display: grid; aspect-ratio: 4 / 3; place-items: center; overflow: hidden; background: var(--color-surface); }
+  .card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 240ms ease; }
+  .catalog-card:hover .card-image img { transform: scale(1.025); }
+  .concept-tag { position: absolute; top: 12px; left: 12px; padding: 5px 8px; border: 1px solid rgb(255 255 255 / 55%); border-radius: 3px; background: rgb(255 255 255 / 90%); color: #333943; font-size: 0.68rem; font-weight: 650; }
+  .card-body { padding: 22px; }
+  .card-kicker { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; color: var(--color-text-muted); font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase; }
+  .card-body h2 { margin: 12px 0 10px; font-size: 1.55rem; }
+  .card-description { min-height: 4.6em; margin-bottom: 20px; font-size: 0.9rem; }
+  .spec-list { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--color-border); }
+  .spec-list > div { display: grid; grid-template-columns: minmax(95px, 0.8fr) 1.2fr; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--color-border); font-size: 0.76rem; }
+  .spec-list dt { color: var(--color-text-muted); }
+  .spec-list dd { margin: 0; overflow-wrap: anywhere; text-align: right; }
+  .inquiry-link { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; color: var(--color-accent); font-size: 0.88rem; font-weight: 650; }
+  .catalog-disclaimer { margin-top: 36px; padding: 20px 22px; border-left: 3px solid var(--color-accent); background: var(--color-surface); font-size: 0.85rem; }
+  .catalog-disclaimer p { margin: 6px 0 0; font-size: 0.8rem; }
+  .empty-state { padding: 42px 12px; text-align: center; }
+  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+  @media (max-width: 1100px) { .filter-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .catalog-hero { padding-block: 52px 34px; } .catalog-content { padding-top: 22px; } .catalog-tools { padding: 14px; } .filter-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; } .reset-button { width: 100%; } .product-grid { grid-template-columns: 1fr; } .card-body { padding: 18px; } .card-description { min-height: 0; } }
+</style>
+
+<script>
+  const catalogRoot = document.querySelector('.catalog-page');
+
+  if (catalogRoot) {
+    const search = catalogRoot.querySelector('[data-search]');
+    const filters = Array.from(catalogRoot.querySelectorAll('[data-filter]'));
+    const cards = Array.from(catalogRoot.querySelectorAll('[data-product]'));
+    const count = catalogRoot.querySelector('[data-count]');
+    const empty = catalogRoot.querySelector('[data-empty]');
+    const reset = catalogRoot.querySelector('[data-reset]');
+
+    const updateCatalog = () => {
+      const query = (search instanceof HTMLInputElement ? search.value : '').trim().toLowerCase();
+      let visible = 0;
+
+      cards.forEach((card) => {
+        const searchable = card.getAttribute('data-search') ?? '';
+        const matchesQuery = searchable.includes(query);
+        const matchesFilters = filters.every((filter) => {
+          if (!(filter instanceof HTMLSelectElement) || !filter.value) return true;
+          const values = (card.getAttribute(`data-${filter.dataset.filter}`) ?? '').split(',');
+          return values.includes(filter.value);
+        });
+        const show = matchesQuery && matchesFilters;
+        card.toggleAttribute('hidden', !show);
+        if (show) visible += 1;
+      });
+
+      if (count) count.textContent = String(visible);
+      if (empty) empty.toggleAttribute('hidden', visible > 0);
+    };
+
+    search?.addEventListener('input', updateCatalog);
+    filters.forEach((filter) => filter.addEventListener('change', updateCatalog));
+    reset?.addEventListener('click', () => {
+      if (search instanceof HTMLInputElement) search.value = '';
+      filters.forEach((filter) => {
+        if (filter instanceof HTMLSelectElement) filter.value = '';
+      });
+      updateCatalog();
+    });
+    updateCatalog();
+  }
+</script>

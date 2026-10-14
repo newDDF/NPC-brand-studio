@@ -1,10 +1,12 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/home.css';
 import SiteHeader from '../../components/SiteHeader.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import HeroSection from '../../components/HeroSection.astro';
 import CapabilitiesSection from '../../components/CapabilitiesSection.astro';
+import ProductsSection from '../../components/ProductsSection.astro';
 import ProjectsSection from '../../components/ProjectsSection.astro';
 import { siteConfig } from '../../config/site';
 import { getSeoTranslations } from '../../i18n/seo';
@@ -46,7 +48,8 @@ const contact = getContactTranslations(locale);
         </div>
       </section>
     )}
-    {siteConfig.features.products && <CapabilitiesSection />}
+    {siteConfig.features.products && <ProductsSection />}
+    {siteConfig.features.capabilities && <CapabilitiesSection />}
     {siteConfig.features.projects && <ProjectsSection />}
     {siteConfig.features.contact && (
       <section class="contact section" id="contact">

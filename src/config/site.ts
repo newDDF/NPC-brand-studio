@@ -37,6 +37,7 @@ export const siteConfig = {
   features: {
     about: true,
     products: true,
+    capabilities: true,
     projects: true,
     news: true,
     contact: true,

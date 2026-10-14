@@ -1,0 +1,17 @@
+---
+import type { GetStaticPaths } from 'astro';
+import ProductCatalogPage from '../../../components/ProductCatalogPage.astro';
+import { siteConfig } from '../../../config/site';
+
+export const getStaticPaths = (() =>
+  siteConfig.locales
+    .filter((locale) => locale !== siteConfig.defaultLocale)
+    .map((locale) => ({
+      params: { locale },
+      props: { locale },
+    }))) satisfies GetStaticPaths;
+
+const { locale } = Astro.props;
+---
+
+<ProductCatalogPage locale={locale} />

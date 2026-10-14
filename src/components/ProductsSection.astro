@@ -1,0 +1,55 @@
+---
+import { siteConfig } from '../config/site';
+import { productCatalog } from '../content/products';
+import { getProductsTranslations } from '../i18n/products';
+
+const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
+const content = getProductsTranslations(locale);
+const products = content.products.map((product) => ({
+  ...product,
+  media: productCatalog.find((item) => item.id === product.id),
+}));
+---
+
+<section class="products-showcase section" id="products">
+  <div class="container">
+    <div class="section-heading products-heading">
+      <p class="eyebrow">{content.eyebrow}</p>
+      <h2>{content.title}</h2>
+      <p class="products-intro">{content.description}</p>
+    </div>
+
+
+    <div class="product-grid">
+      {products.map((product, index) => (
+        <article class="product-card">
+          <div class="product-visual">
+            {product.media?.image ? (
+              <img
+                class="product-image"
+                src={product.media.image}
+                alt={product.imageAlt}
+                loading="lazy"
+                decoding="async"
+              />
+            ) : (
+              <div class="product-visual-placeholder" role="img" aria-label={product.imageAlt}>
+                <span class="placeholder-mark">NPC<span> / </span>{String(index + 1).padStart(2, '0')}</span>
+              </div>
+            )}
+            <span class="product-index">{String(index + 1).padStart(2, '0')}</span>
+          </div>
+
+          <div class="product-body">
+            <p class="product-series">{product.series}</p>
+            <h3>{product.title}</h3>
+            <p class="product-description">{product.description}</p>
+            <a class="product-link" href="#contact">
+              {content.action}<span aria-hidden="true">↗</span>
+            </a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

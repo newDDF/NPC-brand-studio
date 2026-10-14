@@ -1,0 +1,47 @@
+// Fictional demonstration data for the NPC Precision product catalog.
+// All dimensions and fitment examples are illustrative, not certified specifications.
+
+export const catalogProducts = [
+  {
+    id: 'forged-performance',
+    sku: 'NPC-FP-01',
+    series: 'forged',
+    name: 'Forged Performance',
+    image: '/images/products/forged-performance.png',
+    description: 'A performance-focused multi-spoke wheel concept with precise, clean geometry.',
+    finish: 'Satin Black',
+    colors: ['black'],
+    diameters: [18, 19, 20],
+    widths: [8, 8.5, 9, 9.5],
+    pcd: ['5x112', '5x114.3'],
+    vehicles: ['Sports sedan', 'Performance coupe'],
+  },
+  {
+    id: 'flow-formed',
+    sku: 'NPC-FF-02',
+    series: 'flow-formed',
+    name: 'Flow Formed',
+    image: '/images/products/flow-formed.png',
+    description: 'A versatile contemporary design concept balancing styling and everyday use.',
+    finish: 'Graphite Grey',
+    colors: ['grey', 'black'],
+    diameters: [17, 18, 19],
+    widths: [7.5, 8, 8.5, 9],
+    pcd: ['5x100', '5x112', '5x114.3'],
+    vehicles: ['Compact sedan', 'Sport utility vehicle'],
+  },
+  {
+    id: 'classic-sport',
+    sku: 'NPC-CS-03',
+    series: 'sport',
+    name: 'Classic Sport',
+    image: '/images/products/classic-sport.png',
+    description: 'A timeless multi-spoke concept with restrained details and a motorsport character.',
+    finish: 'Silver',
+    colors: ['silver', 'black'],
+    diameters: [17, 18, 19],
+    widths: [7.5, 8, 8.5],
+    pcd: ['5x100', '5x112', '5x114.3'],
+    vehicles: ['Sport compact', 'Classic performance sedan'],
+  },
+] as const;

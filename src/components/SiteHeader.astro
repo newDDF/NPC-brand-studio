@@ -4,6 +4,13 @@ import { getTranslations } from '../i18n';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = getTranslations(locale);
+const basePath = import.meta.env.BASE_URL.endsWith('/')
+  ? import.meta.env.BASE_URL
+  : `${import.meta.env.BASE_URL}/`;
+const homePath = `${basePath}${locale === siteConfig.defaultLocale ? '' : `${locale}/`}`;
+const isProductCatalog = /\/products\/?$/.test(Astro.url.pathname);
+const localizedHref = (targetLocale: string) =>
+  `${basePath}${targetLocale === siteConfig.defaultLocale ? '' : `${targetLocale}/`}${isProductCatalog ? 'products/' : ''}`;
 
 const localeNames: Record<string, string> = {
   en: 'English',
@@ -17,7 +24,7 @@ const localeNames: Record<string, string> = {
 
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href={import.meta.env.BASE_URL} aria-label={siteConfig.name}>
+    <a class="brand" href={homePath} aria-label={siteConfig.name}>
       <img class="brand-logo" src={`${import.meta.env.BASE_URL}${siteConfig.logo.replace(/^\//, '')}`} alt="" />
       <span class="brand-name">{siteConfig.name}</span>
     </a>
@@ -26,7 +33,11 @@ const localeNames: Record<string, string> = {
       {siteConfig.navigation
         .filter((item) => siteConfig.features[item.feature])
         .map((item) => (
-          <a href={item.href}>
+          <a href={item.feature === 'products'
+            ? `${homePath}products/`
+            : item.href.startsWith('#')
+              ? `${homePath}${item.href}`
+              : item.href}>
             {t.nav[item.feature as keyof typeof t.nav] ?? item.label}
           </a>
         ))}
@@ -40,7 +51,7 @@ const localeNames: Record<string, string> = {
         <div class="language-menu">
           {siteConfig.locales.map((item) => (
             <a
-              href={item === siteConfig.defaultLocale ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}${item}/`}
+              href={localizedHref(item)}
               lang={item}
               aria-current={item === locale ? 'page' : undefined}
               class:list={{ active: item === locale }}
@@ -52,7 +63,7 @@ const localeNames: Record<string, string> = {
       </details>
 
       {siteConfig.features.contact && (
-        <a class="header-contact" href="#contact">
+        <a class="header-contact" href={`${homePath}#contact`}>
           {t.nav.contact} <span aria-hidden="true">↗</span>
         </a>
       )}

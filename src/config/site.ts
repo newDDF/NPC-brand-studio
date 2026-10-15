@@ -33,6 +33,16 @@ export const siteConfig = {
     email: 'newnpcx2@proton.me',
   },
 
+  // Official social profiles. Empty URLs are intentionally hidden.
+  socialMedia: [
+    { platform: 'LinkedIn', icon: 'linkedin', url: '' },
+    { platform: 'Instagram', icon: 'instagram', url: '' },
+    { platform: 'YouTube', icon: 'youtube', url: '' },
+    { platform: 'Bluesky', icon: 'bluesky', url: '' },
+    { platform: 'X', icon: 'twitter', url: '' },
+    { platform: 'Telegram', icon: 'telegram', url: '' },
+  ],
+
   // Optional sections
   features: {
     about: true,

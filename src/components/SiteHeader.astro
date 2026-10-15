@@ -7,10 +7,22 @@ const t = getTranslations(locale);
 const basePath = import.meta.env.BASE_URL.endsWith('/')
   ? import.meta.env.BASE_URL
   : `${import.meta.env.BASE_URL}/`;
-const homePath = `${basePath}${locale === siteConfig.defaultLocale ? '' : `${locale}/`}`;
-const isProductCatalog = /\/products\/?$/.test(Astro.url.pathname);
-const localizedHref = (targetLocale: string) =>
-  `${basePath}${targetLocale === siteConfig.defaultLocale ? '' : `${targetLocale}/`}${isProductCatalog ? 'products/' : ''}`;
+const currentPath =
+  Astro.url.pathname.replace(/^\/(zh-cn|es|de|fr|ja)(?=\/|$)/, '') || '/';
+
+const localizedHref = (targetLocale: string, path = currentPath) => {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`;
+  const prefix = targetLocale === siteConfig.defaultLocale ? '' : `${targetLocale}/`;
+  return `${basePath}${prefix}${normalizedPath.slice(1)}`;
+};
+
+const homePath = localizedHref(locale, '/');
+const navPaths: Record<string, string> = {
+  about: '/about/',
+  products: '/products/',
+  projects: '/projects/',
+  news: '/news/',
+};
 
 const localeNames: Record<string, string> = {
   en: 'English',
@@ -33,11 +45,7 @@ const localeNames: Record<string, string> = {
       {siteConfig.navigation
         .filter((item) => siteConfig.features[item.feature])
         .map((item) => (
-          <a href={item.feature === 'products'
-            ? `${homePath}products/`
-            : item.href.startsWith('#')
-              ? `${homePath}${item.href}`
-              : item.href}>
+          <a href={localizedHref(locale, navPaths[item.feature] ?? item.href)}>
             {t.nav[item.feature as keyof typeof t.nav] ?? item.label}
           </a>
         ))}
@@ -63,7 +71,7 @@ const localeNames: Record<string, string> = {
       </details>
 
       {siteConfig.features.contact && (
-        <a class="header-contact" href={`${homePath}#contact`}>
+        <a class="header-contact" href={localizedHref(locale, '/contact/')}>
           {t.nav.contact} <span aria-hidden="true">↗</span>
         </a>
       )}

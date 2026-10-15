@@ -14,7 +14,6 @@ export const productCatalog = [
   },
 ] as const;
 
-
 export const productShowcase = {
-  poster: '/images/brand/wheel-collection-poster.png',
+  poster: '/images/brand/wheel-collection-poster_11zon.webp',
 } as const;

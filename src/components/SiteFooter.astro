@@ -4,79 +4,462 @@ import { getTranslations } from '../i18n';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
 const t = getTranslations(locale);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
+const path = (slug: string) => {
+  const prefix = locale === siteConfig.defaultLocale ? '' : `/${locale}`;
+  return `${base}${prefix}/${slug}/`.replace(/\/+/g, '/');
+};
+
+const copy = {
+  en: {
+    description: 'Precision engineered. Purpose built.',
+    overview: 'Explore',
+    company: 'Company',
+    contact: 'Contact',
+    products: 'Products',
+    projects: 'Projects',
+    about: 'About us',
+    news: 'News',
+    contactTitle: 'Have a project in mind?',
+    contactAction: 'Get in touch',
+    address: 'Factory address',
+    copyright: 'All rights reserved.',
+    back: 'Back to top',
+  },
+  'zh-cn': {
+    description: '精密工程，专为性能而造。',
+    overview: '探索',
+    company: '关于我们',
+    contact: '联系信息',
+    products: '产品系列',
+    projects: '项目案例',
+    about: '公司介绍',
+    news: '新闻动态',
+    contactTitle: '有项目需要探讨？',
+    contactAction: '联系我们',
+    address: '工厂地址',
+    copyright: '版权所有。',
+    back: '返回顶部',
+  },
+  es: {
+    description: 'Ingeniería de precisión. Diseñado con propósito.',
+    overview: 'Explorar',
+    company: 'Empresa',
+    contact: 'Contacto',
+    products: 'Productos',
+    projects: 'Proyectos',
+    about: 'Nosotros',
+    news: 'Noticias',
+    contactTitle: '¿Tiene un proyecto en mente?',
+    contactAction: 'Contactar',
+    address: 'Dirección de fábrica',
+    copyright: 'Todos los derechos reservados.',
+    back: 'Volver arriba',
+  },
+  de: {
+    description: 'Präzise entwickelt. Zweckorientiert gefertigt.',
+    overview: 'Entdecken',
+    company: 'Unternehmen',
+    contact: 'Kontakt',
+    products: 'Produkte',
+    projects: 'Projekte',
+    about: 'Über uns',
+    news: 'Neuigkeiten',
+    contactTitle: 'Sie planen ein Projekt?',
+    contactAction: 'Kontakt aufnehmen',
+    address: 'Werksadresse',
+    copyright: 'Alle Rechte vorbehalten.',
+    back: 'Nach oben',
+  },
+  fr: {
+    description: 'Une ingénierie de précision, pensée pour la performance.',
+    overview: 'Explorer',
+    company: 'Entreprise',
+    contact: 'Contact',
+    products: 'Produits',
+    projects: 'Projets',
+    about: 'À propos',
+    news: 'Actualités',
+    contactTitle: 'Un projet à discuter ?',
+    contactAction: 'Nous contacter',
+    address: 'Adresse de l’usine',
+    copyright: 'Tous droits réservés.',
+    back: 'Retour en haut',
+  },
+  ja: {
+    description: '精密な設計。目的に応えるものづくり。',
+    overview: 'サイト案内',
+    company: '企業情報',
+    contact: 'お問い合わせ',
+    products: '製品',
+    projects: 'プロジェクト',
+    about: '会社概要',
+    news: 'ニュース',
+    contactTitle: 'プロジェクトのご相談はこちら',
+    contactAction: 'お問い合わせ',
+    address: '工場所在地',
+    copyright: '無断転載を禁じます。',
+    back: 'ページ上部へ',
+  },
+}[locale as 'en' | 'zh-cn' | 'es' | 'de' | 'fr' | 'ja'] ?? {
+  description: 'Precision engineered. Purpose built.',
+  overview: 'Explore',
+  company: 'Company',
+  contact: 'Contact',
+  products: 'Products',
+  projects: 'Projects',
+  about: 'About us',
+  news: 'News',
+  contactTitle: 'Have a project in mind?',
+  contactAction: 'Get in touch',
+  address: 'Factory address',
+  copyright: 'All rights reserved.',
+  back: 'Back to top',
+};
+
+const address = 'S Highland Ave #2851, Selma, CA 93662';
+const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20Ave%20%232851%2C%20Selma%2C%20CA%2093662';
 ---
 
 <footer class="site-footer" id="news">
-  <div class="container footer-inner">
-    <a class="brand" href={import.meta.env.BASE_URL} aria-label={siteConfig.name}>
-      <img class="brand-logo" src={`${import.meta.env.BASE_URL}${siteConfig.logo.replace(/^\//, '')}`} alt="" />
-      <span class="brand-name">{siteConfig.name}</span>
-    </a>
+  <div class="container">
+    <div class="footer-main">
+      <div class="footer-brand-column">
+        <a class="brand" href={base || '/'} aria-label={siteConfig.name}>
+          <img
+            class="brand-logo"
+            src={`${base}${siteConfig.logo}`}
+            alt=""
+            width="42"
+            height="42"
+          />
+          <span>{siteConfig.name}</span>
+        </a>
+        <p class="brand-description">{copy.description}</p>
+        <p class="brand-note">ENGINEERED FOR EVERY DETAIL.</p>
+      </div>
 
-    <p>
-      © {new Date().getFullYear()} {siteConfig.legalName}.
-      {t.common.allRightsReserved}
-    </p>
+      <nav class="footer-nav" aria-label={copy.overview}>
+        <h2>{copy.overview}</h2>
+        <a href={path('products')}>{copy.products}</a>
+        <a href={path('projects')}>{copy.projects}</a>
+        <a href={path('news')}>{copy.news}</a>
+      </nav>
 
-    <a href="#top">{t.common.backToTop} ↑</a>
+      <nav class="footer-nav" aria-label={copy.company}>
+        <h2>{copy.company}</h2>
+        <a href={path('about')}>{copy.about}</a>
+        <a href={path('contact')}>{copy.contact}</a>
+        <a href="#top">{copy.back} ↑</a>
+      </nav>
+
+      <div class="footer-contact">
+        <h2>{copy.contact}</h2>
+        <p class="contact-prompt">{copy.contactTitle}</p>
+        <a class="contact-email" href={`mailto:${siteConfig.contact.email}`}>
+          {siteConfig.contact.email}
+          <span aria-hidden="true">↗</span>
+        </a>
+        <p class="address-label">{copy.address}</p>
+        <a
+          class="address-link"
+          href={mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {address}
+          <span aria-hidden="true">↗</span>
+        </a>
+
+        {siteConfig.socialMedia.length > 0 && (
+          <nav class="social-links" aria-label="Social media">
+            {siteConfig.socialMedia.map((social) => (
+              <a
+                href={social.url || undefined}
+                target={social.url ? '_blank' : undefined}
+                rel={social.url ? 'noopener noreferrer' : undefined}
+                aria-disabled={!social.url}
+                aria-label={`${siteConfig.name} on ${social.platform}`}
+                title={social.platform}
+              >
+                <img
+                  src={`https://icons.x0u0x.xyz/assets/svg/${social.icon}.svg`}
+                  alt=""
+                  width="18"
+                  height="18"
+                  loading="lazy"
+                />
+              </a>
+            ))}
+          </nav>
+        )}
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© {new Date().getFullYear()} {siteConfig.legalName}. {copy.copyright}</p>
+      <span class="footer-location">SELMA, CALIFORNIA · USA</span>
+      <a href="#top">{copy.back} ↑</a>
+    </div>
   </div>
 </footer>
 
 <style>
   .site-footer {
-    border-top: 1px solid var(--color-border);
+    color: #e9edf4;
+    background: #111820;
+    border-top: 3px solid var(--color-accent);
   }
 
-  .footer-inner {
-    display: flex;
-    min-height: 100px;
-    align-items: center;
-    justify-content: space-between;
-    gap: 24px;
+  .footer-main {
+    display: grid;
+    grid-template-columns: 1.35fr 0.75fr 0.75fr 1.3fr;
+    gap: clamp(28px, 4vw, 64px);
+    padding-block: 64px 52px;
   }
 
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    font-size: 0.95rem;
+    gap: 12px;
+    color: #fff;
+    font-size: 1.05rem;
     font-weight: 700;
     letter-spacing: -0.025em;
-    white-space: nowrap;
   }
 
   .brand-logo {
-    width: 36px;
-    height: 36px;
+    display: block;
+    width: 42px;
+    height: 42px;
     flex: 0 0 auto;
-    border-radius: 9px;
+    border-radius: 8px;
   }
 
-  .footer-inner p {
-    margin: 0;
-    font-size: 0.75rem;
+  .brand-description {
+    max-width: 260px;
+    margin: 20px 0 0;
+    color: #b1bbc8;
+    font-size: 0.95rem;
+    line-height: 1.8;
   }
 
-  .footer-inner > a:last-child {
-    font-size: 0.85rem;
-    font-weight: 550;
+  .brand-note {
+    margin: 24px 0 0;
+    color: #8492a3;
+    font-size: 0.66rem;
+    font-weight: 650;
+    letter-spacing: 0.13em;
+  }
+
+  .footer-nav,
+  .footer-contact {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .footer-nav h2,
+  .footer-contact h2 {
+    margin: 5px 0 22px;
+    color: #fff;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .footer-nav a {
+    margin-bottom: 15px;
+    color: #b1bbc8;
+    font-size: 0.88rem;
     transition: color 180ms ease;
   }
 
-  .footer-inner > a:last-child:hover {
-    color: var(--color-accent);
+  .footer-nav a:hover,
+  .address-link:hover {
+    color: #fff;
   }
 
-  @media (max-width: 680px) {
-    .footer-inner {
-      align-items: flex-start;
-      flex-wrap: wrap;
-      padding-block: 28px;
+  .contact-prompt {
+    margin: -3px 0 12px;
+    color: #b1bbc8;
+    font-size: 0.88rem;
+    line-height: 1.6;
+  }
+
+  .contact-email {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+
+  .contact-email span,
+  .address-link span {
+    color: #83a8ff;
+  }
+
+  .address-label {
+    margin: 25px 0 8px;
+    color: #8492a3;
+    font-size: 0.72rem;
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .address-link {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 7px;
+    color: #b1bbc8;
+    font-size: 0.84rem;
+    line-height: 1.7;
+    transition: color 180ms ease;
+  }
+
+  .social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    margin-top: 23px;
+  }
+
+  .social-links a {
+    display: inline-flex;
+    width: 34px;
+    height: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #35414e;
+    border-radius: 50%;
+    transition: border-color 180ms ease, background 180ms ease;
+  }
+
+  .social-links a:hover {
+    border-color: #83a8ff;
+    background: #202d3b;
+  }
+
+  .social-links a:hover img {
+    transform: scale(1.08);
+  }
+
+  .social-links a[aria-disabled='true'] {
+    opacity: 0.5;
+  }
+
+  .social-links img {
+    display: block;
+    width: 17px;
+    height: 17px;
+    opacity: 1;
+    filter: none;
+    transition: transform 180ms ease;
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    min-height: 68px;
+    border-top: 1px solid #303a46;
+  }
+
+  .footer-bottom p,
+  .footer-bottom a {
+    margin: 0;
+    color: #9ba7b5;
+    font-size: 0.75rem;
+    line-height: 1.7;
+  }
+
+  .footer-location {
+    color: #8492a3;
+    font-size: 0.66rem;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+  }
+
+  .footer-bottom a {
+    white-space: nowrap;
+    transition: color 180ms ease;
+  }
+
+  .footer-bottom a:hover {
+    color: #fff;
+  }
+
+  @media (max-width: 900px) {
+    .footer-main {
+      grid-template-columns: 1.2fr 1fr 1fr;
+      gap: 36px;
     }
 
-    .footer-inner p {
-      order: 3;
-      width: 100%;
+    .footer-contact {
+      grid-column: 1 / -1;
+      padding-top: 28px;
+      border-top: 1px solid #303a46;
+    }
+
+    .footer-contact h2 {
+      margin-top: 0;
+    }
+
+    .address-label {
+      margin-top: 18px;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .footer-main {
+      grid-template-columns: 1fr 1fr;
+      gap: 34px 22px;
+      padding-block: 42px 36px;
+    }
+
+    .footer-brand-column,
+    .footer-contact {
+      grid-column: 1 / -1;
+    }
+
+    .footer-brand-column {
+      padding-bottom: 8px;
+    }
+
+    .footer-contact {
+      padding-top: 26px;
+    }
+
+    .footer-bottom {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 8px;
+      padding-block: 18px;
+    }
+
+    .footer-location {
+      order: 1;
+    }
+
+    .footer-bottom a {
+      order: 2;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-nav a,
+    .contact-email,
+    .address-link,
+    .social-links a,
+    .footer-bottom a {
+      transition: none;
     }
   }
 </style>

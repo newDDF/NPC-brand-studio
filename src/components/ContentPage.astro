@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteHeader from './SiteHeader.astro';
+import SiteFooter from './SiteFooter.astro';
+import { siteConfig } from '../config/site';
+import { getPageContent, type PageSlug } from '../i18n/pages';
+
+interface Props {
+  locale: string;
+  page: PageSlug;
+}
+
+const { locale, page } = Astro.props;
+const content = getPageContent(locale, page);
+const pageNames: Record<PageSlug, string> = {
+  about: 'About',
+  projects: 'Projects',
+  news: 'News',
+  contact: 'Contact',
+};
+const pageTitle = content.title;
+const contactPage = page === 'contact';
+---
+
+<BaseLayout lang={locale} title={`${pageNames[page]} — ${siteConfig.name}`} description={content.description}>
+  <SiteHeader />
+  <main class="content-page">
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">{pageNames[page]} / NPC PRECISION</p>
+        <h1>{pageTitle}</h1>
+        <p class="page-intro">{content.description}</p>
+      </div>
+    </section>
+
+    <section class="section page-content">
+      <div class="container">
+        <div class="content-grid">
+          {content.cards.map((card, index) => (
+            <article class="content-card">
+              <span class="card-index">{String(index + 1).padStart(2, '0')}</span>
+              <h2>{card.title}</h2>
+              <p>{card.description}</p>
+              {contactPage && index === 2 && (
+                <a class="email-link" href={`mailto:${siteConfig.contact.email}`}>
+                  {siteConfig.contact.email} <span aria-hidden="true">↗</span>
+                </a>
+              )}
+            </article>
+          ))}
+        </div>
+        {page === 'news' && (
+          <p class="content-note">
+            {locale === 'zh-cn' ? '以上为示例内容，后续可替换为真实企业动态。' :
+             locale === 'ja' ? '上記はサンプルコンテンツです。実際の企業ニュースに置き換えられます。' :
+             locale === 'de' ? 'Dies sind Beispielinhalte und können später durch echte Unternehmensmeldungen ersetzt werden.' :
+             locale === 'fr' ? 'Ces contenus sont des exemples, à remplacer par de véritables actualités.' :
+             locale === 'es' ? 'Estos son contenidos de ejemplo que podrán sustituirse por noticias reales.' :
+             'These are sample entries and can be replaced with real company news.'}
+          </p>
+        )}
+      </div>
+    </section>
+
+    {!contactPage && (
+      <section class="page-cta">
+        <div class="container cta-inner">
+          <div>
+            <p class="eyebrow">{siteConfig.name}</p>
+            <h2>{locale === 'zh-cn' ? '让我们开始对话。' :
+                 locale === 'ja' ? '次の一歩を一緒に。' :
+                 locale === 'de' ? 'Lassen Sie uns sprechen.' :
+                 locale === 'fr' ? 'Échangeons sur votre projet.' :
+                 locale === 'es' ? 'Hablemos de su proyecto.' :
+                 'Let’s start a conversation.'}</h2>
+          </div>
+          <a class="button button-primary" href={locale === siteConfig.defaultLocale ? '/contact/' : `/${locale}/contact/`}>
+            {locale === 'zh-cn' ? '联系我们' :
+             locale === 'ja' ? 'お問い合わせ' :
+             locale === 'de' ? 'Kontakt' :
+             locale === 'fr' ? 'Nous contacter' :
+             locale === 'es' ? 'Contactar' :
+             'Contact us'} <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+      </section>
+    )}
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding-block: clamp(76px, 12vw, 150px) var(--space-16);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .page-hero h1 {
+    max-width: 1000px;
+    margin-bottom: 28px;
+    font-size: clamp(2.8rem, 7vw, 6rem);
+  }
+
+  .page-intro {
+    max-width: 720px;
+    margin-bottom: 0;
+    font-size: clamp(1.05rem, 1.6vw, 1.25rem);
+    line-height: 1.8;
+  }
+
+  .content-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .content-card {
+    min-height: 250px;
+    padding: clamp(22px, 3vw, 36px);
+    border: 1px solid var(--color-border);
+    background: var(--color-background);
+  }
+
+  .card-index {
+    display: inline-block;
+    margin-bottom: 42px;
+    color: var(--color-accent);
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+  }
+
+  .content-card h2 {
+    margin-bottom: 14px;
+    font-size: clamp(1.3rem, 2vw, 1.7rem);
+  }
+
+  .content-card p {
+    margin-bottom: 0;
+    line-height: 1.8;
+  }
+
+  .email-link {
+    display: inline-flex;
+    gap: 8px;
+    margin-top: 18px;
+    color: var(--color-accent);
+    font-weight: 650;
+    overflow-wrap: anywhere;
+  }
+
+  .content-note {
+    margin-top: 24px;
+    font-size: 0.9rem;
+  }
+
+  .page-cta {
+    padding-block: var(--space-16);
+    background: var(--color-surface, #f3f5f8);
+  }
+
+  .cta-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 32px;
+  }
+
+  .cta-inner h2 {
+    margin-bottom: 0;
+    font-size: clamp(1.8rem, 4vw, 3rem);
+  }
+
+  @media (max-width: 760px) {
+    .content-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .content-card {
+      min-height: auto;
+    }
+
+    .card-index {
+      margin-bottom: 24px;
+    }
+
+    .cta-inner {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>

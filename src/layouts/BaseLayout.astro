@@ -31,13 +31,18 @@ const localeCodes: Record<string, string> = {
   ja: 'ja_JP',
 };
 
-const localePath = (locale: string) =>
-  locale === siteConfig.defaultLocale ? '/' : `/${locale}/`;
-
 const currentPath =
   Astro.url.pathname.endsWith('/')
     ? Astro.url.pathname
     : `${Astro.url.pathname}/`;
+
+const pagePath =
+  currentPath.replace(/^\/(zh-cn|es|de|fr|ja)(?=\/|$)/, '') || '/';
+
+const localePath = (locale: string) => {
+  const prefix = locale === siteConfig.defaultLocale ? '' : `/${locale}`;
+  return `${prefix}${pagePath === '/' ? '/' : pagePath}`;
+};
 
 const canonicalUrl = configuredUrl
   ? new URL(currentPath, `${configuredUrl}/`).href
@@ -70,7 +75,7 @@ const canonicalUrl = configuredUrl
       <link
         rel="alternate"
         hreflang="x-default"
-        href={new URL('/', `${configuredUrl}/`).href}
+        href={new URL(pagePath, `${configuredUrl}/`).href}
       />
     )}
 

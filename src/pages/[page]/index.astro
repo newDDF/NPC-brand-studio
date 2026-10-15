@@ -1,0 +1,12 @@
+---
+import type { GetStaticPaths } from 'astro';
+import ContentPage from '../../components/ContentPage.astro';
+import { pageSlugs } from '../../i18n/pages';
+
+export const getStaticPaths = (() =>
+  pageSlugs.map((page) => ({ params: { page }, props: { page } }))) satisfies GetStaticPaths;
+
+const { page } = Astro.props;
+---
+
+<ContentPage locale="en" page={page} />

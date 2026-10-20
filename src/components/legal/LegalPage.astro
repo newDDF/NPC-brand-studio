@@ -1,0 +1,196 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SiteHeader from '../SiteHeader.astro';
+import SiteFooter from '../SiteFooter.astro';
+import { siteConfig } from '../../config/site';
+
+interface Props {
+  locale: string;
+  slug: string;
+}
+
+const { locale, slug } = Astro.props;
+
+const content = {
+  en: {
+    privacy: {
+      title: 'Privacy Policy',
+      intro: 'This policy explains general privacy considerations for the NPC Precision demo website.',
+      sections: [
+        ['Website access', 'When you visit this website, the hosting or delivery provider may process technical information such as IP address, request time, browser details, and requested resources in operational or security logs. The site owner may not have direct access to every such record.'],
+        ['Contact by email', 'If you contact the email address shown on this website, your message will be handled through your own email service and the recipient’s email provider. Do not send confidential or sensitive information unless necessary.'],
+        ['Cookies and third parties', 'This demo is not intended to request sensitive personal information. Hosting, embedded resources, or external links may be subject to the relevant providers’ own practices. This policy should be reviewed against the actual services enabled before production use.'],
+        ['Updates', 'This sample policy is informational and may need to be adapted to the actual operator, jurisdiction, technologies, and data practices.']
+      ]
+    },
+    terms: {
+      title: 'Terms of Use',
+      intro: 'By using this website, you agree to use the demo and its content responsibly.',
+      sections: [
+        ['Demo content', 'NPC Precision is a fictional brand created to demonstrate branding and website design. Product descriptions, images, specifications, and application examples are illustrative and may not describe real products.'],
+        ['No technical guarantee', 'Do not rely on demonstration specifications to purchase, install, or operate automotive parts. Actual fitment, safety, compliance, and performance must be verified with qualified suppliers and applicable documentation.'],
+        ['Intellectual property', 'Website layouts, text, graphics, and other materials may be subject to intellectual-property rights or third-party licences. Reuse only materials you own or are authorized to use.'],
+        ['Changes', 'These sample terms should be adapted before the website is used for a real business or customer project.']
+      ]
+    },
+    disclaimer: {
+      title: 'Disclaimer',
+      intro: 'This website is a design demonstration, not a representation of an operating wheel manufacturer.',
+      sections: [
+        ['Fictional brand', 'NPC Precision is fictional and is used to showcase a corporate brand website template. References to company operations, manufacturing, projects, or products are illustrative unless explicitly verified otherwise.'],
+        ['Products and fitment', 'Images, product names, dimensions, PCD, offset, center-bore values, vehicle applications, and other specifications are examples only. They are not certification, engineering approval, or confirmation of vehicle compatibility.'],
+        ['No professional advice', 'Nothing on this demo site constitutes engineering, vehicle-safety, legal, or other professional advice. Verify relevant information independently before making decisions.'],
+        ['Template use', 'The site framework may be customized for other businesses. Before delivery or publication, replace demo content, verify claims and asset permissions, and adapt notices to the client’s actual services and obligations.']
+      ]
+    },
+    'about-demo': {
+      title: 'About This Demo',
+      intro: 'This website demonstrates a reusable framework for corporate branding and marketing websites.',
+      sections: [
+        ['Purpose', 'NPC Precision is a fictional automotive-wheel brand used as a visual and content example. The website is intended to demonstrate layout, navigation, product presentation, multilingual pages, and brand communication.'],
+        ['Customization and delivery', 'The framework may serve as a starting point for websites customized and delivered to other businesses. Each client project should use accurate business information, authorized images and trademarks, and content appropriate to its real products and services.'],
+        ['Before production', 'Demo copy, example specifications, placeholder contact details, and other illustrative content should be reviewed or replaced. Privacy notices, terms, consent mechanisms, and other legal requirements depend on the actual site and its jurisdiction.']
+      ]
+    }
+  },
+  'zh-cn': {
+    privacy: {
+      title: '隐私政策',
+      intro: '本政策说明 NPC Precision 演示网站的一般隐私事项。',
+      sections: [
+        ['网站访问', '访问网站时，托管或内容分发服务商可能在运行或安全日志中处理 IP 地址、请求时间、浏览器信息及访问资源等技术数据。网站运营者不一定能直接访问所有此类记录。'],
+        ['电子邮件联系', '通过网站展示的邮箱联系时，邮件将经由你使用的邮件服务及收件方邮件服务处理。除非确有必要，请勿发送机密或敏感信息。'],
+        ['Cookie 与第三方服务', '本演示站点不以收集敏感个人信息为目的。托管服务、嵌入资源或外部链接可能适用相关服务商自己的数据处理规则。正式上线前应根据实际启用的服务审查本政策。'],
+        ['政策更新', '本页面为示例文本，正式使用前应根据实际运营主体、适用法律、技术配置和数据处理方式进行调整。']
+      ]
+    },
+    terms: {
+      title: '使用条款',
+      intro: '使用本网站即表示你同意以合理方式使用演示网站及其内容。',
+      sections: [
+        ['演示内容', 'NPC Precision 是为展示品牌设计与网站模板而创建的虚构品牌。产品描述、图片、规格及应用案例均为示例，不一定对应真实产品。'],
+        ['不构成技术保证', '请勿依据演示规格购买、安装或使用汽车零部件。实际适配性、安全性、合规性与性能必须通过合格供应商及适用文件进行核实。'],
+        ['知识产权', '网站布局、文字、图形及其他材料可能受知识产权或第三方许可约束。仅可复用自己拥有或已获授权使用的材料。'],
+        ['条款调整', '将本网站用于真实企业或客户项目之前，应根据实际业务调整本示例条款。']
+      ]
+    },
+    disclaimer: {
+      title: '免责声明',
+      intro: '本网站用于展示设计效果，并不代表一家实际运营的轮毂制造企业。',
+      sections: [
+        ['虚构品牌', 'NPC Precision 是虚构品牌，用于展示企业品牌官网模板。除非另有明确核实，网站中关于企业运营、制造、项目或产品的内容均为演示信息。'],
+        ['产品与适配信息', '产品图片、名称、尺寸、PCD、偏距、中心孔、车型应用及其他规格仅为示例，不构成认证、工程批准或车辆适配保证。'],
+        ['不构成专业建议', '本网站内容不构成工程、车辆安全、法律或其他专业建议。作出相关决定前，请独立核实信息。'],
+        ['模板用途', '本网站框架可定制用于其他企业。交付或正式发布前，应替换演示内容、核实宣传声明及素材授权，并根据客户的实际业务和义务调整相关说明。']
+      ]
+    },
+    'about-demo': {
+      title: '关于本演示项目',
+      intro: '本网站用于展示可复用的企业品牌宣传网站框架。',
+      sections: [
+        ['项目目的', 'NPC Precision 是用于展示视觉设计与内容组织方式的虚构汽车轮毂品牌。网站演示页面布局、导航、产品展示、多语言页面及品牌传播能力。'],
+        ['定制与交付', '该框架可作为其他企业网站定制与交付的起点。每个客户项目都应使用准确的企业资料、已获授权的图片和商标，以及符合其真实产品与服务的内容。'],
+        ['正式上线前', '应审查或替换演示文案、示例规格、占位联系信息及其他演示内容。隐私政策、使用条款、同意机制及其他法律要求取决于实际网站和适用地区。']
+      ]
+    }
+  },
+  es: {
+    privacy: { title: 'Política de privacidad', intro: 'Esta política resume aspectos generales de privacidad del sitio de demostración NPC Precision.', sections: [['Acceso al sitio', 'El proveedor de alojamiento o distribución puede procesar datos técnicos, como IP, hora de solicitud, navegador y recursos solicitados, en registros operativos o de seguridad.'], ['Contacto por correo', 'Los mensajes enviados por correo se procesan mediante los servicios de correo utilizados por el remitente y el destinatario. Evite enviar información confidencial innecesaria.'], ['Servicios externos', 'Los servicios de alojamiento y enlaces externos pueden tener sus propias prácticas. Revise y adapte esta política a la configuración real antes de publicar el sitio.']] },
+    terms: { title: 'Condiciones de uso', intro: 'Utilice este sitio de demostración de forma responsable.', sections: [['Contenido de muestra', 'NPC Precision es una marca ficticia creada para mostrar diseño web. Las imágenes, descripciones y especificaciones son ilustrativas.'], ['Sin garantía técnica', 'No utilice datos de demostración para comprar o instalar piezas. Verifique compatibilidad, seguridad y cumplimiento con fuentes cualificadas.'], ['Derechos de uso', 'Reutilice únicamente materiales propios o cuyo uso esté autorizado. Adapte estas condiciones antes de utilizar el sitio en un negocio real.']] },
+    disclaimer: { title: 'Aviso legal', intro: 'Este sitio muestra un diseño de marca y no representa a un fabricante real.', sections: [['Marca ficticia', 'NPC Precision es una marca ficticia. Las referencias a operaciones, fabricación, proyectos o productos son ejemplos, salvo verificación expresa.'], ['Productos y compatibilidad', 'Las imágenes, dimensiones, PCD, desplazamiento, orificio central y aplicaciones son ejemplos; no constituyen certificación ni garantía de compatibilidad.'], ['Uso de la plantilla', 'La plantilla puede adaptarse a otras empresas. Antes de publicarla, verifique las afirmaciones, los permisos de los recursos y los avisos legales aplicables.']] },
+    'about-demo': { title: 'Acerca de esta demostración', intro: 'Este sitio demuestra una plantilla reutilizable para webs corporativas y de marca.', sections: [['Objetivo', 'NPC Precision es una marca ficticia de ruedas de automóvil utilizada como ejemplo visual y editorial.'], ['Personalización y entrega', 'La plantilla puede adaptarse y entregarse a otras empresas. Cada proyecto debe utilizar información precisa y recursos autorizados.'], ['Antes de publicar', 'Sustituya el contenido de muestra y adapte la privacidad y las condiciones a las prácticas reales y a la jurisdicción correspondiente.']] }
+  },
+  de: {
+    privacy: { title: 'Datenschutzerklärung', intro: 'Diese Erklärung beschreibt allgemeine Datenschutzaspekte der NPC-Precision-Demoseite.', sections: [['Websitezugriff', 'Hosting- oder Auslieferungsanbieter können technische Daten wie IP-Adresse, Anfragezeit, Browserinformationen und angeforderte Ressourcen in Betriebs- oder Sicherheitsprotokollen verarbeiten.'], ['E-Mail-Kontakt', 'E-Mails werden über die E-Mail-Dienste von Absender und Empfänger verarbeitet. Senden Sie keine unnötigen vertraulichen Informationen.'], ['Drittanbieter', 'Hosting und externe Links können eigenen Datenschutzpraktiken unterliegen. Prüfen und aktualisieren Sie diesen Text vor dem produktiven Einsatz.']] },
+    terms: { title: 'Nutzungsbedingungen', intro: 'Bitte nutzen Sie diese Demoseite verantwortungsvoll.', sections: [['Demo-Inhalte', 'NPC Precision ist eine fiktive Marke zur Demonstration von Branding und Webdesign. Bilder und Spezifikationen dienen nur als Beispiele.'], ['Keine technische Garantie', 'Verwenden Sie Demodaten nicht als Grundlage für Kauf oder Einbau von Fahrzeugteilen. Passform, Sicherheit und Konformität müssen unabhängig geprüft werden.'], ['Nutzungsrechte', 'Verwenden Sie nur eigene oder ordnungsgemäß lizenzierte Materialien. Passen Sie diese Bedingungen vor einem realen Geschäftseinsatz an.']] },
+    disclaimer: { title: 'Haftungshinweis', intro: 'Diese Website ist eine Design-Demonstration und stellt keinen realen Radhersteller dar.', sections: [['Fiktive Marke', 'NPC Precision ist fiktiv. Aussagen zu Betrieb, Fertigung, Projekten oder Produkten sind Beispiele, sofern sie nicht ausdrücklich verifiziert wurden.'], ['Produkte und Passform', 'Bilder, Maße, Lochkreis, Einpresstiefe, Mittenbohrung und Fahrzeuganwendungen sind Beispiele und keine Zertifizierung oder Passformgarantie.'], ['Vorlagenverwendung', 'Die Vorlage kann für andere Unternehmen angepasst werden. Prüfen Sie vor Veröffentlichung Inhalte, Nutzungsrechte und rechtliche Hinweise.']] },
+    'about-demo': { title: 'Über diese Demo', intro: 'Diese Website demonstriert eine wiederverwendbare Vorlage für Unternehmens- und Markenwebsites.', sections: [['Zweck', 'NPC Precision ist eine fiktive Automobilradmarke als Beispiel für Design und Inhalte.'], ['Anpassung und Übergabe', 'Die Vorlage kann für andere Unternehmen angepasst und ausgeliefert werden. Jedes Projekt benötigt korrekte Angaben und autorisierte Medien.'], ['Vor Veröffentlichung', 'Ersetzen Sie Demo-Inhalte und passen Sie Datenschutz und Nutzungsbedingungen an die tatsächlichen Abläufe und die geltende Rechtsordnung an.']] }
+  },
+  fr: {
+    privacy: { title: 'Politique de confidentialité', intro: 'Cette politique présente les considérations générales relatives à la confidentialité de la démo NPC Precision.', sections: [['Accès au site', 'L’hébergeur ou le fournisseur de diffusion peut traiter des données techniques telles que l’adresse IP, l’heure des requêtes, le navigateur et les ressources demandées dans ses journaux opérationnels ou de sécurité.'], ['Contact par e-mail', 'Les messages sont traités par les services de messagerie de l’expéditeur et du destinataire. Évitez d’envoyer des informations confidentielles inutiles.'], ['Services tiers', 'L’hébergement et les liens externes peuvent relever de pratiques propres à leurs fournisseurs. Adaptez cette politique à la configuration réelle avant publication.']] },
+    terms: { title: 'Conditions d’utilisation', intro: 'Veuillez utiliser ce site de démonstration de manière responsable.', sections: [['Contenu de démonstration', 'NPC Precision est une marque fictive créée pour présenter un design de marque et de site web. Les images et spécifications sont illustratives.'], ['Aucune garantie technique', 'N’utilisez pas les données de démonstration pour acheter ou installer des pièces automobiles. Vérifiez la compatibilité, la sécurité et la conformité auprès de sources qualifiées.'], ['Droits d’utilisation', 'Réutilisez uniquement les éléments que vous possédez ou êtes autorisé à utiliser. Adaptez ces conditions pour tout projet commercial réel.']] },
+    disclaimer: { title: 'Avertissement', intro: 'Ce site est une démonstration de design et ne représente pas un fabricant réel de roues.', sections: [['Marque fictive', 'NPC Precision est fictive. Les références aux activités, à la fabrication, aux projets ou aux produits sont des exemples, sauf vérification explicite.'], ['Produits et compatibilité', 'Les images, dimensions, PCD, déport, alésage central et applications sont des exemples et ne constituent ni certification ni garantie de compatibilité.'], ['Utilisation du modèle', 'Le modèle peut être adapté à d’autres entreprises. Avant publication, vérifiez les contenus, les autorisations des ressources et les mentions légales applicables.']] },
+    'about-demo': { title: 'À propos de cette démo', intro: 'Ce site présente un modèle réutilisable de site vitrine pour les entreprises et les marques.', sections: [['Objectif', 'NPC Precision est une marque fictive de roues automobiles utilisée comme exemple visuel et éditorial.'], ['Personnalisation et livraison', 'Le modèle peut être adapté et livré à d’autres entreprises. Chaque projet doit utiliser des informations exactes et des ressources autorisées.'], ['Avant publication', 'Remplacez les contenus de démonstration et adaptez la confidentialité et les conditions aux pratiques réelles et à la juridiction applicable.']] }
+  },
+  ja: {
+    privacy: { title: 'プライバシーポリシー', intro: 'このポリシーは、NPC Precision のデモサイトに関する一般的なプライバシー事項を説明します。', sections: [['サイトへのアクセス', 'ホスティングまたは配信サービスは、運用・セキュリティログに IP アドレス、リクエスト時刻、ブラウザー情報、アクセスしたリソースなどを記録・処理する場合があります。'], ['メールでの連絡', 'メールは送信者と受信者が利用するメールサービスを通じて処理されます。不要な機密情報を送信しないでください。'], ['外部サービス', 'ホスティングや外部リンクには各サービス独自の取り扱いが適用される場合があります。公開前に実際の構成に合わせて内容を確認してください。']] },
+    terms: { title: '利用規約', intro: '本デモサイトと掲載内容を適切にご利用ください。', sections: [['デモコンテンツ', 'NPC Precision はブランドとウェブサイトのデザインを示すための架空ブランドです。画像や仕様は説明用の例です。'], ['技術的保証なし', 'デモの仕様を自動車部品の購入や取り付けの根拠にしないでください。適合性、安全性、法令遵守を信頼できる情報源で確認してください。'], ['利用権', '自分が権利を持つ素材、または利用許可を得た素材のみを再利用してください。実際の事業で使用する前に規約を調整してください。']] },
+    disclaimer: { title: '免責事項', intro: '本サイトはデザインのデモであり、実在するホイールメーカーを表すものではありません。', sections: [['架空ブランド', 'NPC Precision は架空のブランドです。運営、製造、プロジェクト、製品に関する記述は、明示的に確認されていない限り例示です。'], ['製品と適合性', '画像、寸法、PCD、オフセット、センターボア、車種適合情報などは例示であり、認証や適合保証を意味しません。'], ['テンプレート利用', '本テンプレートは他企業向けにカスタマイズできます。公開前に内容、素材の使用許可、必要な法的表示を確認してください。']] },
+    'about-demo': { title: 'このデモについて', intro: '本サイトは企業・ブランド向けウェブサイトの再利用可能なテンプレートを紹介するものです。', sections: [['目的', 'NPC Precision はデザインとコンテンツの例として使用する架空の自動車ホイールブランドです。'], ['カスタマイズと納品', 'テンプレートは他企業向けにカスタマイズして納品できます。各案件では正確な企業情報と使用許可を得た素材を使用してください。'], ['公開前の確認', 'デモ用コンテンツを置き換え、実際の運用や適用法令に合わせてプライバシーと利用条件を整えてください。']] }
+  }
+} as const;
+
+const language = content[locale as keyof typeof content] ?? content.en;
+const page = language[slug as keyof typeof language] ?? content.en.disclaimer;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const home = locale === siteConfig.defaultLocale ? `${base}/` : `${base}/${locale}/`;
+---
+
+<BaseLayout lang={locale} title={`${page.title} — ${siteConfig.name}`} description={page.intro}>
+  <SiteHeader />
+  <main class="legal-page">
+    <section class="legal-hero">
+      <div class="container">
+        <p class="eyebrow">{siteConfig.name} / DEMO</p>
+        <h1>{page.title}</h1>
+        <p class="legal-intro">{page.intro}</p>
+      </div>
+    </section>
+    <section class="section">
+      <div class="container legal-content">
+        {page.sections.map(([heading, body]) => (
+          <article class="legal-section">
+            <h2>{heading}</h2>
+            <p>{body}</p>
+          </article>
+        ))}
+        <p class="legal-back"><a href={home}>{locale === 'zh-cn' ? '返回首页' : locale === 'ja' ? 'ホームへ戻る' : 'Back to home'} ↗</a></p>
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .legal-hero {
+    padding: clamp(64px, 10vw, 120px) 0 56px;
+    background: var(--color-surface, #f5f7fa);
+    border-bottom: 1px solid var(--color-border, #e1e6ed);
+  }
+  .legal-hero h1 {
+    max-width: 900px;
+    margin: 16px 0;
+    font-size: clamp(2.2rem, 5vw, 4.2rem);
+    line-height: 1.1;
+    letter-spacing: -0.04em;
+  }
+  .legal-intro {
+    max-width: 780px;
+    color: var(--color-text-muted, #5d6878);
+    font-size: 1.08rem;
+    line-height: 1.8;
+  }
+  .legal-content {
+    max-width: 900px;
+  }
+  .legal-section {
+    padding: 28px 0;
+    border-bottom: 1px solid var(--color-border, #e1e6ed);
+  }
+  .legal-section h2 {
+    margin: 0 0 12px;
+    font-size: 1.2rem;
+  }
+  .legal-section p {
+    margin: 0;
+    line-height: 1.9;
+    color: var(--color-text-muted, #5d6878);
+  }
+  .legal-back {
+    margin-top: 32px;
+  }
+  .legal-back a {
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+</style>

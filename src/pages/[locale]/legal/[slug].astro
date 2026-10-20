@@ -1,0 +1,17 @@
+---
+import type { GetStaticPaths } from 'astro';
+import LegalPage from '../../../components/legal/LegalPage.astro';
+import { siteConfig } from '../../../config/site';
+
+export const getStaticPaths = (() => {
+  const slugs = ['privacy', 'terms', 'disclaimer', 'about-demo'];
+  return siteConfig.locales
+    .filter((locale) => locale !== siteConfig.defaultLocale)
+    .flatMap((locale) =>
+      slugs.map((slug) => ({ params: { locale, slug }, props: { locale, slug } })),
+    );
+}) satisfies GetStaticPaths;
+
+const { locale, slug } = Astro.props;
+---
+<LegalPage locale={locale} slug={slug} />

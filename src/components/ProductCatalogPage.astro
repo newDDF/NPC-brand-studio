@@ -252,64 +252,6 @@ const ui = {
 
 const t = ui[locale as keyof typeof ui] ?? ui.en;
 
-const craftCopy = {
-  en: {
-    eyebrow: 'DESIGN / MATERIAL / FINISH',
-    title: 'Details make the difference.',
-    intro: 'Explore the surfaces, machining details and finishes behind each wheel concept.',
-    alt1: 'Close-up of wheel design and surface details',
-    alt2: 'Wheel finish and manufacturing details',
-    caption1: 'Form, proportion and surface',
-    caption2: 'Finish and precision details',
-  },
-  'zh-cn': {
-    eyebrow: '设计 / 材料 / 表面处理',
-    title: '细节，定义品质。',
-    intro: '从轮辐造型到表面处理，了解塑造每一款轮毂设计的细节。',
-    alt1: '轮毂设计与表面细节特写',
-    alt2: '轮毂表面处理与制造细节',
-    caption1: '造型、比例与表面',
-    caption2: '表面处理与精细工艺',
-  },
-  es: {
-    eyebrow: 'DISEÑO / MATERIAL / ACABADO',
-    title: 'La diferencia está en los detalles.',
-    intro: 'Explore las superficies, el mecanizado y los acabados de cada concepto de llanta.',
-    alt1: 'Detalle del diseño y la superficie de una llanta',
-    alt2: 'Acabado y detalle de fabricación de una llanta',
-    caption1: 'Forma, proporción y superficie',
-    caption2: 'Acabado y precisión',
-  },
-  de: {
-    eyebrow: 'DESIGN / MATERIAL / OBERFLÄCHE',
-    title: 'Details machen den Unterschied.',
-    intro: 'Entdecken Sie Oberflächen, Bearbeitungsdetails und Finishes unserer Felgenkonzepte.',
-    alt1: 'Detailansicht von Felgendesign und Oberfläche',
-    alt2: 'Felgenfinish und Fertigungsdetail',
-    caption1: 'Form, Proportion und Oberfläche',
-    caption2: 'Finish und Präzisionsdetails',
-  },
-  fr: {
-    eyebrow: 'DESIGN / MATIÈRE / FINITION',
-    title: 'La différence se joue dans les détails.',
-    intro: 'Découvrez les surfaces, l’usinage et les finitions de chaque concept de jante.',
-    alt1: 'Vue rapprochée du design et de la surface d’une jante',
-    alt2: 'Finition et détail de fabrication d’une jante',
-    caption1: 'Forme, proportions et surface',
-    caption2: 'Finition et précision',
-  },
-  ja: {
-    eyebrow: 'デザイン / 素材 / 仕上げ',
-    title: '違いは、細部に宿る。',
-    intro: 'ホイールの造形、切削ディテール、表面仕上げをご覧ください。',
-    alt1: 'ホイールのデザインと表面ディテール',
-    alt2: 'ホイールの仕上げと製造ディテール',
-    caption1: '形状・プロポーション・表面',
-    caption2: '仕上げと精密なディテール',
-  },
-};
-
-const craft = craftCopy[locale as keyof typeof craftCopy] ?? craftCopy.en;
 
 const productText = copy.products;
 const diameterOptions = [...new Set(allCatalogProducts.flatMap((p) => p.diameters))].sort((a, b) => a - b);
@@ -328,26 +270,6 @@ const title = locale === 'zh-cn' ? '产品目录' : locale === 'ja' ? '製品カ
         <p class="eyebrow">{t.eyebrow}</p>
         <h1>{t.title}</h1>
         <p class="catalog-intro">{t.intro}</p>
-      </div>
-    </section>
-
-    <section class="craft-showcase" aria-label={craft.title}>
-      <div class="container">
-        <div class="craft-heading">
-          <p class="eyebrow">{craft.eyebrow}</p>
-          <h2>{craft.title}</h2>
-          <p>{craft.intro}</p>
-        </div>
-        <div class="craft-grid">
-          <figure class="craft-image craft-image-detail">
-            <img src={`${import.meta.env.BASE_URL}images/products/productdetails.webp`} alt={craft.alt1} loading="lazy" />
-            <figcaption>{craft.caption1}</figcaption>
-          </figure>
-          <figure class="craft-image craft-image-finish">
-            <img src={`${import.meta.env.BASE_URL}images/products/productdetails2.webp`} alt={craft.alt2} loading="lazy" />
-            <figcaption>{craft.caption2}</figcaption>
-          </figure>
-        </div>
       </div>
     </section>
 
@@ -424,7 +346,6 @@ const title = locale === 'zh-cn' ? '产品目录' : locale === 'ja' ? '製品カ
           {allCatalogProducts.map((product) => {
             const translated = productText.find((item) => item.id === product.id);
             const name = translated?.title ?? product.name;
-            const description = translated?.description ?? product.description;
             return (
               <article
                 class="catalog-card"
@@ -448,7 +369,7 @@ const title = locale === 'zh-cn' ? '产品目录' : locale === 'ja' ? '製品カ
                     <span>{product.isSpecification ? t.specification : product.finish}</span>
                   </div>
                   <h2>{name}</h2>
-                  <p class="card-description">{product.isSpecification ? t.specDescription : description}</p>
+                  <p class="card-description">{product.isSpecification ? t.specDescription : translated?.description ?? product.description}</p>
                   <dl class="spec-list">
                     {product.isSpecification ? (
                       <>
@@ -488,31 +409,19 @@ const title = locale === 'zh-cn' ? '产品目录' : locale === 'ja' ? '製品カ
           })}
         </div>
         <p class="empty-state" data-empty hidden>{t.empty}</p>
-      </div>
-
       <aside class="catalog-disclaimer">
         <strong>{t.demo}</strong>
         <p>{t.disclaimer}</p>
       </aside>
-    </section>
+      </div>
+
+</section>
   </main>
   <SiteFooter />
 </BaseLayout>
 
 <style>
-  .craft-showcase { padding-block: 46px 28px; }
-  .craft-heading { max-width: 720px; margin-bottom: 28px; }
-  .craft-heading h2 { margin: 0 0 14px; font-size: clamp(1.8rem, 3.5vw, 3rem); letter-spacing: -0.035em; }
-  .craft-heading > p:last-child { max-width: 620px; margin-bottom: 0; color: var(--color-text-muted); line-height: 1.8; }
-  .craft-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 20px; align-items: stretch; }
-  .craft-image { position: relative; min-width: 0; min-height: 250px; margin: 0; overflow: hidden; background: var(--color-surface); }
-  .craft-image img { display: block; width: 100%; height: 100%; min-height: 300px; object-fit: cover; }
-  .craft-image-detail img { aspect-ratio: 16 / 10; }
-  .craft-image-finish img { aspect-ratio: 4 / 5; }
-  .craft-image figcaption { position: absolute; inset: auto 0 0; padding: 42px 20px 18px; color: #fff; font-size: 0.82rem; font-weight: 600; background: linear-gradient(transparent, rgb(0 0 0 / 68%)); }
   @media (max-width: 640px) {
-    .craft-showcase { padding-top: 34px; }
-    .craft-grid { grid-template-columns: 1fr; gap: 14px; }
     .craft-image img, .craft-image-detail img, .craft-image-finish img { min-height: 0; aspect-ratio: 16 / 10; }
   }
   .catalog-page { min-height: 65vh; }
@@ -547,8 +456,6 @@ const title = locale === 'zh-cn' ? '产品目录' : locale === 'ja' ? '製品カ
   .spec-list dt { color: var(--color-text-muted); }
   .spec-list dd { margin: 0; overflow-wrap: anywhere; text-align: right; }
   .inquiry-link { display: flex; justify-content: space-between; gap: 12px; margin-top: 20px; color: var(--color-accent); font-size: 0.88rem; font-weight: 650; }
-  .catalog-disclaimer { margin-top: 36px; padding: 20px 22px; border-left: 3px solid var(--color-accent); background: var(--color-surface); font-size: 0.85rem; }
-  .catalog-disclaimer p { margin: 6px 0 0; font-size: 0.8rem; }
   .empty-state { padding: 42px 12px; text-align: center; }
   .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
   @media (max-width: 1100px) { .filter-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); } .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

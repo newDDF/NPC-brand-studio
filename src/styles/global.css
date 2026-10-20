@@ -144,3 +144,23 @@ p {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Global image hover zoom */
+@media (hover: hover) and (pointer: fine) {
+  main img:not([data-no-hover-zoom]):not(.logo):not(.icon):not(.page-banner-image) {
+    transition: transform 300ms ease;
+    transform-origin: center;
+  }
+
+  main a:hover img:not([data-no-hover-zoom]):not(.logo):not(.icon):not(.page-banner-image),
+  main article:hover img:not([data-no-hover-zoom]):not(.logo):not(.icon):not(.page-banner-image),
+  main figure:hover img:not([data-no-hover-zoom]):not(.logo):not(.icon):not(.page-banner-image) {
+    transform: scale(1.1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  main img {
+    transition: none !important;
+  }
+}

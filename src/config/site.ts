@@ -6,7 +6,7 @@ export const siteConfig = {
   tagline: 'Precision engineered. Purpose built.',
   description:
     'Precision manufacturing and engineered solutions for demanding industries.',
-  url: 'https://npc-brand-studio.pages.dev',
+  url: 'https://demo.x0u0x.xyz',
 
   // Localization
   defaultLocale: 'en',

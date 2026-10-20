@@ -1,9 +1,7 @@
 ---
 import { siteConfig } from '../config/site';
-import { getTranslations } from '../i18n';
 
 const locale = Astro.currentLocale ?? siteConfig.defaultLocale;
-const t = getTranslations(locale);
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 const path = (slug: string) => {
@@ -118,8 +116,16 @@ const copy = {
   back: 'Back to top',
 };
 
-const address = 'S Highland Ave #2851, Selma, CA 93662';
-const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20Ave%20%232851%2C%20Selma%2C%20CA%2093662';
+const legalCopy = {
+  en: { heading: 'Legal', privacy: 'Privacy policy', terms: 'Terms of use', disclaimer: 'Disclaimer', aboutDemo: 'About this demo', demoNote: 'Fictional brand demo · Template showcase', demoLabel: 'BRAND WEBSITE DEMO' },
+  'zh-cn': { heading: '法律与声明', privacy: '隐私政策', terms: '使用条款', disclaimer: '免责声明', aboutDemo: '关于本演示项目', demoNote: '虚构品牌演示 · 企业网站模板展示', demoLabel: '品牌网站演示项目' },
+  es: { heading: 'Información legal', privacy: 'Privacidad', terms: 'Condiciones de uso', disclaimer: 'Aviso legal', aboutDemo: 'Sobre esta demo', demoNote: 'Marca ficticia · Demostración de plantilla', demoLabel: 'DEMOSTRACIÓN DE MARCA' },
+  de: { heading: 'Rechtliches', privacy: 'Datenschutz', terms: 'Nutzungsbedingungen', disclaimer: 'Haftungshinweis', aboutDemo: 'Über diese Demo', demoNote: 'Fiktive Marke · Website-Vorlage', demoLabel: 'MARKEN-WEBSITE-DEMO' },
+  fr: { heading: 'Informations légales', privacy: 'Confidentialité', terms: 'Conditions d’utilisation', disclaimer: 'Avertissement', aboutDemo: 'À propos de cette démo', demoNote: 'Marque fictive · Démonstration de modèle', demoLabel: 'DÉMO DE SITE DE MARQUE' },
+  ja: { heading: '法的情報', privacy: 'プライバシーポリシー', terms: '利用規約', disclaimer: '免責事項', aboutDemo: 'このデモについて', demoNote: '架空ブランド · ウェブサイトテンプレートのデモ', demoLabel: 'ブランドサイトのデモ' },
+}[locale as 'en' | 'zh-cn' | 'es' | 'de' | 'fr' | 'ja'] ?? {
+  heading: 'Legal', privacy: 'Privacy policy', terms: 'Terms of use', disclaimer: 'Disclaimer', aboutDemo: 'About this demo', demoNote: 'Fictional brand demo · Template showcase', demoLabel: 'BRAND WEBSITE DEMO',
+};
 ---
 
 <footer class="site-footer" id="news">
@@ -154,6 +160,14 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
         <a href="#top">{copy.back} ↑</a>
       </nav>
 
+      <nav class="footer-nav footer-legal" aria-label={legalCopy.heading}>
+        <h2>{legalCopy.heading}</h2>
+        <a href={path('legal/privacy')}>{legalCopy.privacy}</a>
+        <a href={path('legal/terms')}>{legalCopy.terms}</a>
+        <a href={path('legal/disclaimer')}>{legalCopy.disclaimer}</a>
+        <a href={path('legal/about-demo')}>{legalCopy.aboutDemo}</a>
+      </nav>
+
       <div class="footer-contact">
         <h2>{copy.contact}</h2>
         <p class="contact-prompt">{copy.contactTitle}</p>
@@ -161,16 +175,7 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
           {siteConfig.contact.email}
           <span aria-hidden="true">↗</span>
         </a>
-        <p class="address-label">{copy.address}</p>
-        <a
-          class="address-link"
-          href={mapUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          {address}
-          <span aria-hidden="true">↗</span>
-        </a>
+        <p class="demo-note">{legalCopy.demoNote}</p>
 
         {siteConfig.socialMedia.length > 0 && (
           <nav class="social-links" aria-label="Social media">
@@ -199,7 +204,7 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
 
     <div class="footer-bottom">
       <p>© {new Date().getFullYear()} {siteConfig.legalName}. {copy.copyright}</p>
-      <span class="footer-location">SELMA, CALIFORNIA · USA</span>
+      <span class="footer-location">{legalCopy.demoLabel}</span>
       <a href="#top">{copy.back} ↑</a>
     </div>
   </div>
@@ -214,7 +219,7 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
 
   .footer-main {
     display: grid;
-    grid-template-columns: 1.35fr 0.75fr 0.75fr 1.3fr;
+    grid-template-columns: 1.2fr 0.75fr 0.75fr 1fr 1.3fr;
     gap: clamp(28px, 4vw, 64px);
     padding-block: 64px 52px;
   }
@@ -277,8 +282,7 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
     transition: color 180ms ease;
   }
 
-  .footer-nav a:hover,
-  .address-link:hover {
+  .footer-nav a:hover {
     color: #fff;
   }
 
@@ -300,27 +304,16 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
   }
 
   .contact-email span,
-  .address-link span {
+  .contact-email span {
     color: #83a8ff;
   }
 
-  .address-label {
-    margin: 25px 0 8px;
-    color: #8492a3;
-    font-size: 0.72rem;
-    font-weight: 650;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-  }
-
-  .address-link {
-    display: inline-flex;
-    align-items: flex-start;
-    gap: 7px;
+  .demo-note {
+    max-width: 280px;
+    margin: 24px 0 0;
     color: #b1bbc8;
-    font-size: 0.84rem;
-    line-height: 1.7;
-    transition: color 180ms ease;
+    font-size: 0.82rem;
+    line-height: 1.8;
   }
 
   .social-links {
@@ -412,9 +405,6 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
       margin-top: 0;
     }
 
-    .address-label {
-      margin-top: 18px;
-    }
   }
 
   @media (max-width: 560px) {
@@ -456,7 +446,6 @@ const mapUrl = 'https://www.google.com/maps/search/?api=1&query=S%20Highland%20A
   @media (prefers-reduced-motion: reduce) {
     .footer-nav a,
     .contact-email,
-    .address-link,
     .social-links a,
     .footer-bottom a {
       transition: none;

@@ -25,13 +25,36 @@ const contactPage = page === 'contact';
 <BaseLayout lang={locale} title={`${pageNames[page]} — ${siteConfig.name}`} description={content.description}>
   <SiteHeader />
   <main class="content-page">
-    <section class="page-hero">
-      <div class="container">
-        <p class="eyebrow">{pageNames[page]} / NPC PRECISION</p>
-        <h1>{pageTitle}</h1>
-        <p class="page-intro">{content.description}</p>
-      </div>
-    </section>
+    {!contactPage ? (
+      <section class="page-banner">
+        <img
+          class={`page-banner-image page-banner-image--${page}`}
+          src={`${import.meta.env.BASE_URL}${
+            page === 'about'
+              ? 'images/news/aboutus.webp'
+              : page === 'projects'
+                ? 'images/projects/projects-preview.webp'
+                : 'images/news/news-preview.webp'
+          }`}
+          alt={`${pageNames[page]} — NPC Precision`}
+          fetchpriority="high"
+        />
+        <div class="page-banner-shade"></div>
+        <div class="container page-banner-content">
+          <p class="eyebrow">{pageNames[page]} / NPC PRECISION</p>
+          <h1>{pageTitle}</h1>
+          <p class="page-intro">{content.description}</p>
+        </div>
+      </section>
+    ) : (
+      <section class="page-hero">
+        <div class="container">
+          <p class="eyebrow">{pageNames[page]} / NPC PRECISION</p>
+          <h1>{pageTitle}</h1>
+          <p class="page-intro">{content.description}</p>
+        </div>
+      </section>
+    )}
 
     <section class="section page-content">
       <div class="container">
@@ -90,6 +113,108 @@ const contactPage = page === 'contact';
 </BaseLayout>
 
 <style>
+
+  /* Full-width 16:9 banner for About, Projects and News */
+  .page-banner {
+    position: relative;
+    isolation: isolate;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    background: #17202b;
+    color: #fff;
+  }
+
+  .page-banner-image,
+  .page-banner-shade {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .page-banner-image {
+    z-index: 0;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  /* Keep the About image focal point independently adjustable. */
+  .page-banner-image--about {
+    object-position: center 38%;
+  }
+
+  .page-banner-shade {
+    z-index: 1;
+    background: linear-gradient(
+      90deg,
+      rgba(10, 18, 29, 0.84) 0%,
+      rgba(10, 18, 29, 0.52) 48%,
+      rgba(10, 18, 29, 0.12) 100%
+    );
+  }
+
+  .page-banner-content {
+    position: relative;
+    z-index: 2;
+    padding-block: clamp(36px, 6vw, 88px);
+  }
+
+  .page-banner .eyebrow {
+    color: #d5deeb;
+  }
+
+  .page-banner h1 {
+    max-width: 1000px;
+    margin-bottom: 22px;
+    color: #fff;
+    font-size: clamp(2.5rem, 6.5vw, 5.8rem);
+    line-height: 1.05;
+  }
+
+  .page-banner .page-intro {
+    max-width: 720px;
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.92);
+    font-size: clamp(1rem, 1.5vw, 1.2rem);
+    line-height: 1.75;
+  }
+
+  @media (max-width: 760px) {
+    .page-banner {
+      aspect-ratio: 4 / 3;
+    }
+
+    .page-banner-image {
+      object-position: center;
+    }
+
+    .page-banner-shade {
+      background: linear-gradient(
+        0deg,
+        rgba(10, 18, 29, 0.88) 0%,
+        rgba(10, 18, 29, 0.48) 65%,
+        rgba(10, 18, 29, 0.18) 100%
+      );
+    }
+
+    .page-banner-content {
+      padding-block: 28px;
+    }
+
+    .page-banner h1 {
+      margin-bottom: 12px;
+      font-size: clamp(2rem, 8vw, 3.2rem);
+    }
+
+    .page-banner .page-intro {
+      font-size: 0.95rem;
+      line-height: 1.55;
+    }
+  }
   .page-hero {
     padding-block: clamp(76px, 12vw, 150px) var(--space-16);
     border-bottom: 1px solid var(--color-border);
